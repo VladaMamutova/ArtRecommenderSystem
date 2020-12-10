@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\ПИ\СИИ - системы искусств. интеллекта\ArtRecommenderSystem\ArtRecommenderSystem\App.xaml
-11151548125
+4-2091021219
 
-5-2017746502
+8599068495
 151066141668
-MainWindow.xaml;
+Views\MainPage.xaml;Views\MainWindow.xaml;Views\MyGalleryPage.xaml;Views\RecommendationPage.xaml;
 
-True
+False
 

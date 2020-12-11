@@ -14,6 +14,59 @@
             <utilities:DateToStringConverter x:Key="DateToStringConverter" />
             <utilities:StringArrayToStringConverter x:Key="StringArrayToStringConverter" />
             <utilities:BooleanToStringConverter x:Key="BooleanToStringConverter" />
+            <Style x:Key="LikeButton" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <StackPanel x:Name="Root" Orientation="Horizontal" Margin="0">
+                                <materialDesign:PackIcon Name="Icon" VerticalAlignment="Center" Margin="10 0 0 0" Width="24" Height="24"/>
+                                <TextBlock Text="{TemplateBinding Property=ContentStringFormat}" Style="{StaticResource MaterialDesignSubtitle2TextBlock}" Padding="8 10 16 10" VerticalAlignment="Center"></TextBlock>
+                            </StackPanel>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+                                    <Setter Property="Background" TargetName="Root" Value="{StaticResource PrimaryHueLightBrush}"/>
+                                    <Setter Property="Kind" TargetName="Icon" Value="Heart" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>
+                                    <Setter Property="Kind" TargetName="Icon" Value="HeartOutline" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+                                    <Setter Property="Kind" TargetName="Icon" Value="Heart" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="DislikeButton" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <StackPanel x:Name="Root" Orientation="Horizontal" Margin="0">
+                                <materialDesign:PackIcon Kind="Prohibited" VerticalAlignment="Center" Margin="10 0 0 0" Width="24" Height="24"/>
+                                <TextBlock Text="{TemplateBinding Property=ContentStringFormat}" Style="{StaticResource MaterialDesignSubtitle2TextBlock}" Padding="8 10 16 10" VerticalAlignment="Center"></TextBlock>
+                            </StackPanel>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightForegroundBrush}"/>
+                                    <Setter Property="Background" TargetName="Root" Value="{StaticResource MaterialDesignChipBackground}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightForegroundBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Page.Resources>
     <ScrollViewer>
@@ -32,75 +85,80 @@
         <StackPanel Margin="20">
             <!--<ItemsControl x:Name="artWorkList" ItemsSource="{Binding}">-->
             <materialDesign:Card  Width="360" Height="430" Padding="16" Background="{DynamicResource MaterialDesignCardBackground}">
-                <StackPanel>
-                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontSize="24" Text="Масло"/>
-                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
-                    <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
-                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                        <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
-                    </StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 12 0 0">
-                            <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                            <Border CornerRadius="16" Width="30" Height="30" Background="{StaticResource PrimaryHueLightBrush}">
-                                <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                            </Border>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBlock HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontSize="24" Text="Масло"/>
+                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                        <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
+                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                            <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
-                            <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                            <ToggleButton IsChecked="{Binding AreMasterClassesHeld}" ToolTip="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Style="{StaticResource MaterialDesignActionLightToggleButton}">
-                                <ToggleButton.Content>
-                                    <materialDesign:PackIcon Kind="Close" ToolTip="Проводятся"/>
-                                </ToggleButton.Content>
-                                <materialDesign:ToggleButtonAssist.OnContent>
-                                    <materialDesign:PackIcon Kind="Tick" ToolTip="Не проводятся"/>
-                                </materialDesign:ToggleButtonAssist.OnContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 12 0 0">
+                                <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                <Border CornerRadius="16" Width="30" Height="30" Background="{StaticResource PrimaryHueLightBrush}">
+                                    <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
+                                <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                <ToggleButton IsChecked="{Binding AreMasterClassesHeld}" ToolTip="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Style="{StaticResource MaterialDesignActionLightToggleButton}">
+                                    <ToggleButton.Content>
+                                        <materialDesign:PackIcon Kind="Close" ToolTip="Проводятся"/>
+                                    </ToggleButton.Content>
+                                    <materialDesign:ToggleButtonAssist.OnContent>
+                                        <materialDesign:PackIcon Kind="Tick" ToolTip="Не проводятся"/>
+                                    </materialDesign:ToggleButtonAssist.OnContent>
 
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                        <Border CornerRadius="16" Background="{TemplateBinding Background}">
-                                            <materialDesign:PackIcon x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Проводятся"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
-                                                <Setter Property="Kind" TargetName="Icon" Value="Tick"/>
-                                            </Trigger>
-                                            <Trigger Property="IsChecked" Value="False">
-                                                <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
-                                                <Setter Property="Kind" TargetName="Icon" Value="Close"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border CornerRadius="16" Background="{TemplateBinding Background}">
+                                                <materialDesign:PackIcon x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Проводятся"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
+                                                    <Setter Property="Kind" TargetName="Icon" Value="Tick"/>
+                                                </Trigger>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
+                                                    <Setter Property="Kind" TargetName="Icon" Value="Close"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                            <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                            <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity}" IsReadOnly="True" Foreground="{StaticResource MaterialDesignChipBackground}"/>
                         </StackPanel>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                        <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                        <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity}" IsReadOnly="True" Foreground="{StaticResource PrimaryHueLightBrush}"/>
-                    </StackPanel>
-                    <Grid Margin="0 4 0 0">
-                        <TextBlock Text="Жанры:" Margin="0 4 8 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                        <ItemsControl ItemsSource="{Binding Genres}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <materialDesign:Chip Content="{Binding}" Margin="0 6 6 0"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                        <!--<materialDesign:Chip Content="бытовой" Margin="0 6 6 0"/>
+                        <Grid Margin="0 4 0 0">
+                            <TextBlock Text="Жанры:" Margin="0 4 8 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                            <ItemsControl ItemsSource="{Binding Genres}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:Chip Content="{Binding}" Margin="0 6 6 0"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <!--<materialDesign:Chip Content="бытовой" Margin="0 6 6 0"/>
                             <materialDesign:Chip Content="портрет" Margin="0 6 6 0"/>
                             <materialDesign:Chip Content="религиозный" Margin="0 6 6 0"/>
                             <materialDesign:Chip Content="исторический" Margin="0 6 6 0"/>
@@ -113,10 +171,19 @@
                             <materialDesign:Chip Content="интерьер" Margin="0 6 6 0"/>
                             <materialDesign:Chip Content="архитектура" Margin="0 6 6 0"/>
                             <materialDesign:Chip Content="декоративный" Margin="0 6 6 0"/>-->
-                    </Grid>
-                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
-                    <Grid>
-                        <ToggleButton IsChecked="False" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
+                        </Grid>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1">
+                        <Separator VerticalAlignment="Top" Style="{StaticResource MaterialDesignSeparator}" />
+                        <ListBox Margin="0 20 0 0"
+                            Style="{StaticResource MaterialDesignToolToggleFlatListBox}"
+                            SelectedIndex="0"
+                            Background="{x:Null}">
+                            <ListBoxItem Style="{StaticResource LikeButton}" ContentStringFormat="Нравится" HorizontalAlignment="Left"/>
+                            <ListBoxItem Margin="20 0 0 0" Style="{StaticResource DislikeButton}" ContentStringFormat="Не рекомендовать" HorizontalAlignment="Right"/>
+                        </ListBox>
+                        <!--<ToggleButton IsChecked="False" Margin="0 20 0 0" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                                     <Border CornerRadius="20" Background="{TemplateBinding Background}">
@@ -135,28 +202,28 @@
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </ToggleButton.Template>
-                        </ToggleButton>
-                        <ToggleButton IsChecked="False" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
-                        <ToggleButton.Template>
-                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                <Border CornerRadius="20" Background="{TemplateBinding Background}">
-                                    <materialDesign:PackIcon x:Name="Icon" Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Нравится"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
-                                        <Setter Property="Kind" TargetName="Icon" Value="Heart"/>
-                                    </Trigger>
-                                    <Trigger Property="IsChecked" Value="False">
-                                        <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
-                                        <Setter Property="Kind" TargetName="Icon" Value="HeartOutline"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </ToggleButton.Template>
-                    </ToggleButton>
+                        </ToggleButton>-->
+                        <ToggleButton IsChecked="False" Margin="0 20 0 0" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Border CornerRadius="20" Background="{TemplateBinding Background}">
+                                        <materialDesign:PackIcon x:Name="Icon" Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Нравится"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
+                                            <Setter Property="Kind" TargetName="Icon" Value="Heart"/>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
+                                            <Setter Property="Kind" TargetName="Icon" Value="HeartOutline"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                            </ToggleButton>
                     </Grid>
-                </StackPanel>
+                    </Grid>
             </materialDesign:Card>
             <!--</ItemsControl>-->
         </StackPanel>

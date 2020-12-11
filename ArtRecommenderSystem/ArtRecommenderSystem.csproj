@@ -50,6 +50,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=3.2.0.1979, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.3.2.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -62,6 +65,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.113.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,11 +85,27 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Database\ApplicationContext.cs" />
+    <Compile Include="Logic\ArtHelper.cs" />
+    <Compile Include="Logic\ArtNodeConverter.cs" />
+    <Compile Include="Models\ArtItem.cs" />
+    <Compile Include="Models\ArtLeaf.cs" />
+    <Compile Include="Models\ArtNode.cs" />
     <Compile Include="Models\ArtType.cs" />
     <Compile Include="Models\ArtWork.cs" />
     <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\Genres.cs" />
+    <Compile Include="Models\PopularityEnum.cs" />
     <Compile Include="Models\PopularityType.cs" />
     <Compile Include="Models\WorkGenre.cs" />
+    <Compile Include="Utilities\BooleanToStringConverter.cs" />
+    <Compile Include="Utilities\DateToStringConverter.cs" />
+    <Compile Include="Utilities\EnumExtensions.cs" />
+    <Compile Include="Utilities\EnumConverter.cs" />
+    <Compile Include="Utilities\GenreToStringConverter.cs" />
+    <Compile Include="Utilities\PopularityToStringConverter.cs" />
+    <Compile Include="Utilities\StringArrayToStringConverter.cs" />
+    <Compile Include="ViewModels\ArtCard.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Views\MyGalleryPage.xaml.cs">
       <DependentUpon>MyGalleryPage.xaml</DependentUpon>
     </Compile>

@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System.Data.Entity;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using ArtRecommenderSystem.Database;
+using ArtRecommenderSystem.Models;
 namespace ArtRecommenderSystem.Views
 {
     /// <summary>
@@ -9,6 +12,8 @@ namespace ArtRecommenderSystem.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        // ApplicationContext db;
+
         private MainPage mainPage;
         private RecommendationPage recommendationPage;
         private MyGalleryPage myGalleryPage;
@@ -16,6 +21,17 @@ namespace ArtRecommenderSystem.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            /*db = new ApplicationContext();
+            db.ArtWorks.Load();*/
+            //this.DataContext = db.ArtWorks.Local.ToBindingList();
+
+            //var tree = File.ReadAllText("art.json");
+            //var reader = new JsonTextReader(new StringReader(tree));
+            //var root = JsonSerializer.CreateDefault()
+            //    .Deserialize<ArtNode>(reader);
+            //root.InitParents(new[] { root.Name });
+
             mainPage = new MainPage();
             recommendationPage = new RecommendationPage();
             myGalleryPage = new MyGalleryPage();

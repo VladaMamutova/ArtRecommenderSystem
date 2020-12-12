@@ -103,6 +103,7 @@
     <Compile Include="Utilities\EnumConverter.cs" />
     <Compile Include="Utilities\GenreToStringConverter.cs" />
     <Compile Include="Utilities\PopularityToStringConverter.cs" />
+    <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\StringArrayToStringConverter.cs" />
     <Compile Include="ViewModels\ArtCard.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />

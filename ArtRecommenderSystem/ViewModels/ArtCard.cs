@@ -6,14 +6,25 @@ namespace ArtRecommenderSystem.ViewModels
 {
     public class ArtCard : INotifyPropertyChanged
     {
-        private bool _isChecked;
-        public bool IsChecked
+        private bool _isLiked;
+        public bool IsLiked
         {
-            get => _isChecked;
+            get => _isLiked;
             set
             {
-                _isChecked = value;
-                OnPropertyChanged(nameof(IsChecked));
+                _isLiked = value;
+                OnPropertyChanged(nameof(IsLiked));
+            }
+        }
+
+        private bool _isDisliked;
+        public bool IsDisliked
+        {
+            get => _isDisliked;
+            set
+            {
+                _isDisliked = value;
+                OnPropertyChanged(nameof(IsDisliked));
             }
         }
 

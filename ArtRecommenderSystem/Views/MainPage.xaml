@@ -133,8 +133,18 @@
                                 <Grid Grid.Row="1">
                                     <Separator Style="{StaticResource MaterialDesignSeparator}" VerticalAlignment="Top"/>
                                     <Grid Margin="0 20 0 0">
-                                        <ToggleButton Style="{StaticResource LikeButton}" ContentStringFormat="Нравится" HorizontalAlignment="Left"/>
-                                        <ToggleButton Style="{StaticResource DislikeButton}" ContentStringFormat="Не рекомендовать" HorizontalAlignment="Right"/>
+                                        <ToggleButton Style="{StaticResource LikeButton}"
+                                                      ContentStringFormat="Нравится"
+                                                      HorizontalAlignment="Left"
+                                                      IsChecked="{Binding IsLiked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                      Command="{Binding DataContext.LikeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      CommandParameter="{Binding}"/>
+                                        <ToggleButton Style="{StaticResource DislikeButton}"
+                                                      ContentStringFormat="Не рекомендовать"
+                                                      HorizontalAlignment="Right"
+                                                      IsChecked="{Binding IsDisliked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                      Command="{Binding DataContext.DislikeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      CommandParameter="{Binding}"/>
                                     </Grid>
                                 </Grid>
                             </Grid>

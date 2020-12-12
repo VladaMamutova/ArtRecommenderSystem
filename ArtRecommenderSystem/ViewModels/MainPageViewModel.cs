@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using ArtRecommenderSystem.Models;
+using ArtRecommenderSystem.Utilities;
 using Newtonsoft.Json;
 
 namespace ArtRecommenderSystem.ViewModels
@@ -22,6 +23,9 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
+        public RelayCommand LikeCommand { get; }
+        public RelayCommand DislikeCommand { get; }
+
         public MainPageViewModel()
         {
             var tree = File.ReadAllText("art.json");
@@ -33,6 +37,22 @@ namespace ArtRecommenderSystem.ViewModels
 
             ArtCards = new List<ArtCard>(root.GetAllLeaves()
                 .Select(BuildArtRecord));
+
+            LikeCommand = new RelayCommand(o =>
+            {
+                if (o is ArtCard artCard)
+                {
+                    if (artCard.IsLiked) artCard.IsDisliked = false;
+                }
+            });
+
+            DislikeCommand = new RelayCommand(o =>
+            {
+                if (o is ArtCard artCard)
+                {
+                    if (artCard.IsDisliked) artCard.IsLiked = false;
+                }
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,7 +68,6 @@ namespace ArtRecommenderSystem.ViewModels
         {
             return new ArtCard
             {
-                IsChecked = false,
                 Name = leaf.Name,
                 Parents = leaf.Parents,
                 Date = leaf.Date,

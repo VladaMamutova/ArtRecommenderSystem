@@ -3,10 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ArtRecommenderSystem.Views"
       xmlns:utilities="clr-namespace:ArtRecommenderSystem.Utilities"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
       mc:Ignorable="d"
       FontSize="14"
       d:DesignHeight="500" d:DesignWidth="800">
@@ -75,30 +73,20 @@
         </ResourceDictionary>
     </Page.Resources>
     <ScrollViewer>
-        <!--<ListBox x:Name="artWorkList" ItemsSource="{Binding}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Title}" FontSize="16" />
-                        <TextBlock Text="{Binding Company}" FontSize="12" />
-                        <TextBlock Text="{Binding Price}" FontSize="13" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListItem></ListItem>
-        </ListBox>-->
         <StackPanel Margin="20">
             <ItemsControl ItemsSource="{Binding ArtCards}" HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:Card Width="400" Height="456" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
+                        <materialDesign:Card Width="416" Height="480" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Grid.Row="0">
-                                    <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" FontSize="24"/>
+                                    <Border BorderBrush="{x:Null}" Height="60">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="26"/>
+                                    </Border>
                                     <Separator Style="{StaticResource MaterialDesignSeparator}" />
                                     <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
                                     <Separator Style="{StaticResource MaterialDesignSeparator}" />
@@ -122,40 +110,12 @@
                                             <Border CornerRadius="16" Width="Auto" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
                                                 <TextBlock Text="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Padding="10 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                                             </Border>
-                                            <!--<ToggleButton IsChecked="{Binding AreMasterClassesHeld}" ToolTip="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Style="{StaticResource MaterialDesignActionLightToggleButton}">
-                                            -->
-                                            <!--<ToggleButton.Content>
-                                    <materialDesign:PackIcon Kind="Close" ToolTip="Проводятся"/>
-                                </ToggleButton.Content>
-                                <materialDesign:ToggleButtonAssist.OnContent>
-                                    <materialDesign:PackIcon Kind="Tick" ToolTip="Не проводятся"/>
-                                </materialDesign:ToggleButtonAssist.OnContent>-->
-                                            <!--
-                                            <ToggleButton.Template>
-                                                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                    <Border CornerRadius="16" Background="{TemplateBinding Background}">
-                                                        <materialDesign:PackIcon x:Name="Icon" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Проводятся"/>
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsChecked" Value="True">
-                                                            <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
-                                                            <Setter Property="Kind" TargetName="Icon" Value="Tick"/>
-                                                        </Trigger>
-                                                        <Trigger Property="IsChecked" Value="False">
-                                                            <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
-                                                            <Setter Property="Kind" TargetName="Icon" Value="Close"/>
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </ToggleButton.Template>
-                                        </ToggleButton>-->
                                         </StackPanel>
                                     </Grid>
-                                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Cursor="Hand">
                                         <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
                                         <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity, Converter={StaticResource EnumConverter}}" IsReadOnly="True" ToolTip="{Binding Popularity, Converter={StaticResource PopularityToStringConverter}}" Foreground="{StaticResource AttentionToActionBrush}"/>
                                     </StackPanel>
-                                    <!--<WrapPanel Margin="0 4 0 0">-->
                                     <TextBlock Text="Жанры:" Margin="0 8 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
                                     <ItemsControl ItemsSource="{Binding Genres}">
                                         <ItemsControl.ItemTemplate>
@@ -169,62 +129,9 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
-                                    <!--<materialDesign:Chip Content="бытовой" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="портрет" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="религиозный" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="исторический" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="мифологический" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="религиозный" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="батальный" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="натюрморт" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="марина" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="анималистический" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="интерьер" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="архитектура" Margin="0 6 6 0"/>
-                            <materialDesign:Chip Content="декоративный" Margin="0 6 6 0"/>-->
-                                    <!--</WrapPanel>-->
                                 </StackPanel>
                                 <Grid Grid.Row="1">
                                     <Separator Style="{StaticResource MaterialDesignSeparator}" VerticalAlignment="Top"/>
-                                    <!--<ToggleButton IsChecked="False" Margin="0 20 0 0" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
-                                        <ToggleButton.Template>
-                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                <Border CornerRadius="20" Background="{TemplateBinding Background}">
-                                                    <materialDesign:PackIcon Kind="Prohibited" Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Больше не показывать"/>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsChecked" Value="True">
-
-                                                        <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
-                                                        <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsChecked" Value="False">
-                                                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>
-                                                        <Setter Property="Background" Value="{StaticResource MaterialDesignPaper}"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </ToggleButton.Template>
-                                    </ToggleButton>
-                                    <ToggleButton IsChecked="False" Margin="0 20 0 0" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
-                                        <ToggleButton.Template>
-                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                <Border CornerRadius="20" Background="{TemplateBinding Background}">
-                                                    <materialDesign:PackIcon x:Name="Icon" Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Нравится"/>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsChecked" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
-                                                        <Setter Property="Kind" TargetName="Icon" Value="Heart"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsChecked" Value="False">
-                                                        <Setter Property="Background" Value="{StaticResource MaterialDesignChipBackground}"/>
-                                                        <Setter Property="Kind" TargetName="Icon" Value="HeartOutline"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </ToggleButton.Template>
-                                    </ToggleButton>-->
                                     <Grid Margin="0 20 0 0">
                                         <ToggleButton Style="{StaticResource LikeButton}" ContentStringFormat="Нравится" HorizontalAlignment="Left"/>
                                         <ToggleButton Style="{StaticResource DislikeButton}" ContentStringFormat="Не рекомендовать" HorizontalAlignment="Right"/>

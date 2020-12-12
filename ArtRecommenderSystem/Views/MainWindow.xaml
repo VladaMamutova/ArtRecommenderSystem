@@ -9,7 +9,7 @@
         Title="Art Recommender System"
         Background="{DynamicResource MaterialDesignPaper}"
         FontSize="14"
-        Height="600" Width="1200" MinWidth="800" MinHeight="520" WindowStyle="None" BorderThickness="2" BorderBrush="{StaticResource PrimaryHueMidBrush}" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
+        Height="640" Width="980" MinWidth="800" MinHeight="520" WindowStyle="None" BorderThickness="2" BorderBrush="{StaticResource PrimaryHueMidBrush}" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
             <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightBrush}" />

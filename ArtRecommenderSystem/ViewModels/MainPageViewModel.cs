@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using ArtRecommenderSystem.Database;
 using ArtRecommenderSystem.Models;
 using ArtRecommenderSystem.Utilities;
 using Newtonsoft.Json;
@@ -38,11 +39,22 @@ namespace ArtRecommenderSystem.ViewModels
             ArtCards = new List<ArtCard>(root.GetAllLeaves()
                 .Select(BuildArtRecord));
 
+            SetUserPreferences();
+
             LikeCommand = new RelayCommand(o =>
             {
                 if (o is ArtCard artCard)
                 {
-                    if (artCard.IsLiked) artCard.IsDisliked = false;
+                    if (artCard.IsLiked)
+                    {
+                        artCard.IsDisliked = false;
+                        ApplicationContext.GetApplicationContext().UpdatePreference(artCard.Id, artCard.IsLiked);
+                    }
+                    else
+                    {
+                        ApplicationContext.GetApplicationContext()
+                            .RemovePreference(artCard.Id);
+                    }
                 }
             });
 
@@ -50,7 +62,16 @@ namespace ArtRecommenderSystem.ViewModels
             {
                 if (o is ArtCard artCard)
                 {
-                    if (artCard.IsDisliked) artCard.IsLiked = false;
+                    if (artCard.IsDisliked)
+                    {
+                        artCard.IsLiked = false;
+                        ApplicationContext.GetApplicationContext().UpdatePreference(artCard.Id, artCard.IsLiked);
+                    }
+                    else
+                    {
+                        ApplicationContext.GetApplicationContext()
+                            .RemovePreference(artCard.Id);
+                    }
                 }
             });
         }
@@ -68,6 +89,7 @@ namespace ArtRecommenderSystem.ViewModels
         {
             return new ArtCard
             {
+                Id = leaf.Id,
                 Name = leaf.Name,
                 Parents = leaf.Parents,
                 Date = leaf.Date,
@@ -76,6 +98,19 @@ namespace ArtRecommenderSystem.ViewModels
                 AreMasterClassesHeld = leaf.AreMasterClassesHeld,
                 Genres = leaf.Genres.ToArray()
             };
+        }
+
+
+        private void SetUserPreferences()
+        {
+            var preferences = ApplicationContext.GetApplicationContext()
+                .GetUserPreferences();
+            foreach (var preference in preferences)
+            {
+                var artCard = _artCards.Find(art => art.Id == preference.ArtId);
+                artCard.IsLiked = preference.Like == 1;
+                artCard.IsDisliked = preference.Like == 0;
+            }
         }
     }
 }

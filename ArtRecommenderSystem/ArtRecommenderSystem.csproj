@@ -96,6 +96,8 @@
     <Compile Include="Models\Genres.cs" />
     <Compile Include="Models\PopularityEnum.cs" />
     <Compile Include="Models\PopularityType.cs" />
+    <Compile Include="Models\Preference.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\WorkGenre.cs" />
     <Compile Include="Utilities\BooleanToStringConverter.cs" />
     <Compile Include="Utilities\DateToStringConverter.cs" />

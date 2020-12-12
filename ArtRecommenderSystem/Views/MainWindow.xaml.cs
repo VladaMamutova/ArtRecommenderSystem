@@ -1,10 +1,8 @@
-﻿using System.Data.Entity;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ArtRecommenderSystem.Database;
-using ArtRecommenderSystem.Models;
+
 namespace ArtRecommenderSystem.Views
 {
     /// <summary>
@@ -12,29 +10,17 @@ namespace ArtRecommenderSystem.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        // ApplicationContext db;
-
-        private MainPage mainPage;
-        private RecommendationPage recommendationPage;
-        private MyGalleryPage myGalleryPage;
+        private readonly MainPage _mainPage;
+        private readonly RecommendationPage _recommendationPage;
+        private readonly MyGalleryPage _myGalleryPage;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            /*db = new ApplicationContext();
-            db.ArtWorks.Load();*/
-            //this.DataContext = db.ArtWorks.Local.ToBindingList();
-
-            //var tree = File.ReadAllText("art.json");
-            //var reader = new JsonTextReader(new StringReader(tree));
-            //var root = JsonSerializer.CreateDefault()
-            //    .Deserialize<ArtNode>(reader);
-            //root.InitParents(new[] { root.Name });
-
-            mainPage = new MainPage();
-            recommendationPage = new RecommendationPage();
-            myGalleryPage = new MyGalleryPage();
+            _mainPage = new MainPage();
+            _recommendationPage = new RecommendationPage();
+            _myGalleryPage = new MyGalleryPage();
             MainRadioButton.IsChecked = true;
         }
 
@@ -65,20 +51,30 @@ namespace ArtRecommenderSystem.Views
         private void MainPage_OnChecked(object sender, RoutedEventArgs e)
         {
             MyGalleryRadioButton.IsChecked = false;
-            ContentFrame.Navigate(mainPage);
+            ContentFrame.Navigate(_mainPage);
         }
 
         private void RecommendationPage_OnChecked(object sender, RoutedEventArgs e)
         {
             MyGalleryRadioButton.IsChecked = false;
-            ContentFrame.Navigate(recommendationPage);
+            ContentFrame.Navigate(_recommendationPage);
         }
 
         private void MyGalleryPage_OnChecked(object sender, RoutedEventArgs e)
         {
             MainRadioButton.IsChecked = false;
             RecommendationRadioButton.IsChecked = false;
-            ContentFrame.Navigate(myGalleryPage);
+            ContentFrame.Navigate(_myGalleryPage);
+        }
+
+        private void SetUser(string login)
+        {
+            if (ApplicationContext.GetApplicationContext().SetUser(login) !=
+                true)
+            {
+                MessageBox.Show("Пользователь с логином \"" + login +
+                                "\" не найден.");
+            }
         }
     }
 }

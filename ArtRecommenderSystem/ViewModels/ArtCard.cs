@@ -28,6 +28,7 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
+        public int Id { get; set; }
         public string Name { get; set; }
         public string[] Parents { get; set; }
         public int Date { get; set; }

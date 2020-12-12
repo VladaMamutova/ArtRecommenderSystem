@@ -12,7 +12,12 @@ namespace ArtRecommenderSystem.Views
         {
             InitializeComponent();
             DataContext = new MainPageViewModel();
-            //DataContext = db.ArtWorks.Local.ToBindingList();
+        }
+
+        public MainPage(bool isFavorite)
+        {
+            InitializeComponent();
+            DataContext = new MainPageViewModel(isFavorite);
         }
     }
 }

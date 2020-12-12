@@ -66,12 +66,8 @@
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryMid" MouseLeftButtonDown="Move">
             <Grid Height="40">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Art Recommender System" FontWeight="Medium" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" MouseLeftButtonDown="Move">
+                <TextBlock Text="Art Recommender System" FontWeight="Medium" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" MouseLeftButtonDown="Move">
                     <Button Margin="15 0 5 0" Width="24" Height="24" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" ToolTip="Развернуть" Click="ButtonExpand_OnClick">
                         <materialDesign:PackIcon Kind="ArrowExpand" Foreground="{StaticResource PrimaryHueLightBrush}" Width="23" Height="23"/>
                     </Button>

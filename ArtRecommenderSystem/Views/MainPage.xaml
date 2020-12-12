@@ -73,7 +73,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <ScrollViewer>
-        <StackPanel Margin="20">
+        <StackPanel Margin="16">
             <ItemsControl ItemsSource="{Binding ArtCards}" HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

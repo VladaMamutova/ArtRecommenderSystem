@@ -69,7 +69,7 @@ namespace ArtRecommenderSystem.Views
 
         private void SetUser(string login)
         {
-            if (ApplicationContext.GetApplicationContext().SetUser(login) !=
+            if (ApplicationContext.GetInstance().SetUser(login) !=
                 true)
             {
                 MessageBox.Show("Пользователь с логином \"" + login +

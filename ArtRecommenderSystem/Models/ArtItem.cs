@@ -1,6 +1,6 @@
 ﻿namespace ArtRecommenderSystem.Models
 {
-    internal abstract class ArtItem
+    public abstract class ArtItem
     {
         public string Name { get; set; }
         public string[] Parents { get; set; }

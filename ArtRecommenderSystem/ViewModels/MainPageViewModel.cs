@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using ArtRecommenderSystem.Database;
 using ArtRecommenderSystem.Models;
 using ArtRecommenderSystem.Utilities;
-using Newtonsoft.Json;
 
 namespace ArtRecommenderSystem.ViewModels
 {
@@ -24,56 +22,80 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
-        public RelayCommand LikeCommand { get; }
-        public RelayCommand DislikeCommand { get; }
+        private RelayCommand _likeCommand;
+
+        public RelayCommand LikeCommand
+        {
+            get
+            {
+                return _likeCommand ??
+                       (_likeCommand = new RelayCommand(o =>
+                       {
+                           if (!(o is ArtCard artCard)) return;
+                           if (artCard.IsLiked)
+                           {
+                               artCard.IsDisliked = false;
+                               ApplicationContext.GetInstance()
+                                   .UpdatePreference(artCard.Id,
+                                       artCard.IsLiked);
+                           }
+                           else
+                           {
+                               ApplicationContext.GetInstance()
+                                   .RemovePreference(artCard.Id);
+                           }
+                       }));
+            }
+        }
+
+        private RelayCommand _dislikeCommand;
+
+        public RelayCommand DislikeCommand
+        {
+            get
+            {
+                return _dislikeCommand ??
+                       (_dislikeCommand = new RelayCommand(o =>
+                       {
+                           if (!(o is ArtCard artCard)) return;
+                           if (artCard.IsDisliked)
+                           {
+                               artCard.IsLiked = false;
+                               ApplicationContext.GetInstance()
+                                   .UpdatePreference(artCard.Id,
+                                       artCard.IsLiked);
+                           }
+                           else
+                           {
+                               ApplicationContext.GetInstance()
+                                   .RemovePreference(artCard.Id);
+                           }
+                       }));
+            }
+        }
 
         public MainPageViewModel()
         {
-            var tree = File.ReadAllText("art.json");
-            var reader = new JsonTextReader(new StringReader(tree));
-            var root = JsonSerializer.CreateDefault()
-                .Deserialize<ArtNode>(reader);
-            //root.InitParents(new[] { root.Name });
-            root.InitParents(new string[0]);
-
-            ArtCards = new List<ArtCard>(root.GetAllLeaves()
-                .Select(BuildArtRecord));
-
+            ArtCards = new List<ArtCard>(ApplicationContext
+                .GetInstance().ArtLeaves.Select(BuildArtRecord));
             SetUserPreferences();
+        }
 
-            LikeCommand = new RelayCommand(o =>
-            {
-                if (o is ArtCard artCard)
-                {
-                    if (artCard.IsLiked)
-                    {
-                        artCard.IsDisliked = false;
-                        ApplicationContext.GetApplicationContext().UpdatePreference(artCard.Id, artCard.IsLiked);
-                    }
-                    else
-                    {
-                        ApplicationContext.GetApplicationContext()
-                            .RemovePreference(artCard.Id);
-                    }
-                }
-            });
+        public MainPageViewModel(bool isFavorite)
+        {
+            var artLeaves = ApplicationContext.GetInstance().ArtLeaves;
+            var preferences = ApplicationContext.GetInstance()
+                .GetUserPreferences(isFavorite);
 
-            DislikeCommand = new RelayCommand(o =>
+            ArtCards = new List<ArtCard>();
+            foreach (var preference in preferences)
             {
-                if (o is ArtCard artCard)
-                {
-                    if (artCard.IsDisliked)
-                    {
-                        artCard.IsLiked = false;
-                        ApplicationContext.GetApplicationContext().UpdatePreference(artCard.Id, artCard.IsLiked);
-                    }
-                    else
-                    {
-                        ApplicationContext.GetApplicationContext()
-                            .RemovePreference(artCard.Id);
-                    }
-                }
-            });
+                var artLeaf = artLeaves.Find(art => art.Id == preference.ArtId);
+                var artCard = BuildArtRecord(artLeaf);
+                artCard.IsLiked = isFavorite;
+                artCard.IsDisliked = !isFavorite;
+                ArtCards.Add(artCard);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -103,7 +125,7 @@ namespace ArtRecommenderSystem.ViewModels
 
         private void SetUserPreferences()
         {
-            var preferences = ApplicationContext.GetApplicationContext()
+            var preferences = ApplicationContext.GetInstance()
                 .GetUserPreferences();
             foreach (var preference in preferences)
             {

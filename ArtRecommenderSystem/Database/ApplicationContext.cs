@@ -1,44 +1,56 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using ArtRecommenderSystem.Models;
+
+using Newtonsoft.Json;
 
 namespace ArtRecommenderSystem.Database
 {
     public class ApplicationContext : DbContext
     {
-        private static ApplicationContext _applicationContext;
+        private static ApplicationContext _instance;
         private static readonly object SyncRoot = new object();
 
         public DbSet<User> Users { get; set; }
         public DbSet<Preference> Preferences { get; set; }
 
+        public List<ArtLeaf> ArtLeaves { get; }
+
         public User CurrentUser { get; private set; }
 
         private ApplicationContext() : base("DefaultConnection")
         {
+            var tree = File.ReadAllText("art.json");
+            var reader = new JsonTextReader(new StringReader(tree));
+            var root = JsonSerializer.CreateDefault()
+                .Deserialize<ArtNode>(reader);
+            //root.InitParents(new[] { root.Name });
+            root.InitParents(new string[0]);
+
+            ArtLeaves = new List<ArtLeaf>(root.GetAllLeaves());
         }
 
-        public static ApplicationContext GetApplicationContext()
+        public static ApplicationContext GetInstance()
         {
-            if (_applicationContext == null)
+            if (_instance == null)
             {
                 lock (SyncRoot)
                 {
-                    _applicationContext = new ApplicationContext();
-                    _applicationContext.SetUser("architect");
-                    _applicationContext.Preferences.Load();
+                    _instance = new ApplicationContext();
+                    _instance.SetUser("architect");
+                    _instance.Preferences.Load();
                 }
             }
 
-            return _applicationContext;
+            return _instance;
         }
-
+        
         public bool SetUser(string nickname)
         {
             CurrentUser =
-                _applicationContext.Users.FirstOrDefault(user =>
-                    user.Nickname == nickname);
+                Users.FirstOrDefault(user => user.Nickname == nickname);
             return CurrentUser != null;
         }
 
@@ -46,6 +58,15 @@ namespace ArtRecommenderSystem.Database
         {
             if (CurrentUser == null) return new List<Preference>();
             return Preferences.Where(pref => pref.UserId == CurrentUser.Id)
+                .ToList();
+        }
+
+        public List<Preference> GetUserPreferences(bool isFavorite)
+        {
+            if (CurrentUser == null) return new List<Preference>();
+            return Preferences.Where(pref =>
+                    pref.UserId == CurrentUser.Id &&
+                    pref.Like == (isFavorite ? 1 : 0))
                 .ToList();
         }
 

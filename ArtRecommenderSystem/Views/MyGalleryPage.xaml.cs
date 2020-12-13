@@ -8,14 +8,14 @@ namespace ArtRecommenderSystem.Views
     /// </summary>
     public partial class MyGalleryPage : Page
     {
-        private readonly MainPage _favoritePage;
-        private readonly MainPage _blacklistPage;
+        private readonly ArtCardsPage _favoritePage;
+        private readonly ArtCardsPage _blacklistPage;
         
         public MyGalleryPage()
         {
             InitializeComponent();
-            _favoritePage = new MainPage(true);
-            _blacklistPage = new MainPage(false);
+            _favoritePage = new ArtCardsPage(true);
+            _blacklistPage = new ArtCardsPage(false);
 
             PreferencesToggleButton.IsChecked = true;
         }

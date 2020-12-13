@@ -10,7 +10,7 @@ namespace ArtRecommenderSystem.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly MainPage _mainPage;
+        private readonly ArtCardsPage _mainPage;
         private readonly RecommendationPage _recommendationPage;
         private readonly MyGalleryPage _myGalleryPage;
 
@@ -18,7 +18,7 @@ namespace ArtRecommenderSystem.Views
         {
             InitializeComponent();
 
-            _mainPage = new MainPage();
+            _mainPage = new ArtCardsPage();
             _recommendationPage = new RecommendationPage();
             _myGalleryPage = new MyGalleryPage();
             MainRadioButton.IsChecked = true;

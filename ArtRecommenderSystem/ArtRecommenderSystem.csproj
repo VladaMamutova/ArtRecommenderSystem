@@ -90,15 +90,10 @@
     <Compile Include="Models\ArtItem.cs" />
     <Compile Include="Models\ArtLeaf.cs" />
     <Compile Include="Models\ArtNode.cs" />
-    <Compile Include="Models\ArtType.cs" />
-    <Compile Include="Models\ArtWork.cs" />
-    <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Genres.cs" />
     <Compile Include="Models\PopularityEnum.cs" />
-    <Compile Include="Models\PopularityType.cs" />
     <Compile Include="Models\Preference.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\WorkGenre.cs" />
     <Compile Include="Utilities\BooleanToStringConverter.cs" />
     <Compile Include="Utilities\DateToStringConverter.cs" />
     <Compile Include="Utilities\EnumExtensions.cs" />
@@ -108,14 +103,14 @@
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\StringArrayToStringConverter.cs" />
     <Compile Include="ViewModels\ArtCard.cs" />
-    <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\ArtCardsViewModel.cs" />
     <Compile Include="Views\MyGalleryPage.xaml.cs">
       <DependentUpon>MyGalleryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecommendationPage.xaml.cs">
       <DependentUpon>RecommendationPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\MainPage.xaml">
+    <Page Include="Views\ArtCardsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -127,8 +122,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Views\ArtCardsPage.xaml.cs">
+      <DependentUpon>ArtCardsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

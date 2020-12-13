@@ -8,7 +8,7 @@ using ArtRecommenderSystem.Utilities;
 
 namespace ArtRecommenderSystem.ViewModels
 {
-    class MainPageViewModel : INotifyPropertyChanged
+    class ArtCardsViewModel : INotifyPropertyChanged
     {
         private List<ArtCard> _artCards;
 
@@ -74,14 +74,14 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
-        public MainPageViewModel()
+        public ArtCardsViewModel()
         {
             ArtCards = new List<ArtCard>(ApplicationContext
                 .GetInstance().ArtLeaves.Select(BuildArtRecord));
             SetUserPreferences();
         }
 
-        public MainPageViewModel(bool isFavorite)
+        public ArtCardsViewModel(bool isFavorite)
         {
             var artLeaves = ApplicationContext.GetInstance().ArtLeaves;
             var preferences = ApplicationContext.GetInstance()

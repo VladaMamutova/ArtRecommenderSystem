@@ -31,10 +31,12 @@
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
                                     <Setter Property="Background" TargetName="Root" Value="{StaticResource PrimaryHueLightBrush}"/>
                                     <Setter Property="Kind" TargetName="Icon" Value="Heart" />
+                                    <Setter Property="ToolTip" Value="Вам нравится этот вид искусства, а ещё он добавлен в раздел &quot;Понравившиеся&quot; Моей галереи" />
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>
                                     <Setter Property="Kind" TargetName="Icon" Value="HeartOutline" />
+                                    <Setter Property="ToolTip" Value="Сделайте рекомендации точнее и добавьте этот вид искусства в раздел &quot;Понравившиеся&quot; Моей галереи" />
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
@@ -58,9 +60,11 @@
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightForegroundBrush}"/>
                                     <Setter Property="Background" TargetName="Root" Value="{StaticResource AttentionToActionBrush}"/>
+                                    <Setter Property="ToolTip" Value="Этот вид искусства добавлен в Черный список Моей галереи и больше не отображается в ваших рекомендациях" />
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>
+                                    <Setter Property="ToolTip" Value="Нажмите, и мы больше не будем рекомендовать этот вид искусства" />
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightForegroundBrush}"/>
@@ -72,91 +76,94 @@
             </Style>
         </ResourceDictionary>
     </Page.Resources>
-    <ScrollViewer>
-        <StackPanel Margin="16">
-            <ItemsControl ItemsSource="{Binding ArtCards}" HorizontalAlignment="Center">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <materialDesign:Card Width="416" Height="480" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0">
-                                    <Border BorderBrush="{x:Null}" Height="60">
-                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="26"/>
-                                    </Border>
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
-                                    <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                        <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
-                                    </StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 12 0 0">
-                                            <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                            <Border CornerRadius="16" Width="32" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
-                                                <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                                            </Border>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Margin="16">
+                <ItemsControl ItemsSource="{Binding ArtCards}" HorizontalAlignment="Center">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Card Width="416" Height="480" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0">
+                                        <Border BorderBrush="{x:Null}" Height="60">
+                                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="26"/>
+                                        </Border>
+                                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                                        <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
+                                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                            <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
-                                            <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                            <Border CornerRadius="16" Width="Auto" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
-                                                <TextBlock Text="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Padding="10 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                                            </Border>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 12 0 0">
+                                                <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                                <Border CornerRadius="16" Width="32" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
+                                                    <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
+                                                <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                                <Border CornerRadius="16" Width="Auto" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
+                                                    <TextBlock Text="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Padding="10 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Cursor="Hand">
+                                            <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                            <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity, Converter={StaticResource EnumConverter}}" IsReadOnly="True" ToolTip="{Binding Popularity, Converter={StaticResource PopularityToStringConverter}}" Foreground="{StaticResource AttentionToActionBrush}"/>
                                         </StackPanel>
-                                    </Grid>
-                                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Cursor="Hand">
-                                        <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                        <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity, Converter={StaticResource EnumConverter}}" IsReadOnly="True" ToolTip="{Binding Popularity, Converter={StaticResource PopularityToStringConverter}}" Foreground="{StaticResource AttentionToActionBrush}"/>
+                                        <TextBlock Text="Жанры:" Margin="0 8 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                        <ItemsControl ItemsSource="{Binding Genres}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <materialDesign:Chip Content="{Binding ., Converter={StaticResource GenreToStringConverter}}" Margin="0 6 6 0" Background="{StaticResource MaterialDesignChipBackground}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
                                     </StackPanel>
-                                    <TextBlock Text="Жанры:" Margin="0 8 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                    <ItemsControl ItemsSource="{Binding Genres}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <materialDesign:Chip Content="{Binding ., Converter={StaticResource GenreToStringConverter}}" Margin="0 6 6 0" Background="{StaticResource MaterialDesignChipBackground}"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </StackPanel>
-                                <Grid Grid.Row="1">
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" VerticalAlignment="Top"/>
-                                    <Grid Margin="0 20 0 0">
-                                        <ToggleButton Style="{StaticResource LikeButton}"
+                                    <Grid Grid.Row="1">
+                                        <Separator Style="{StaticResource MaterialDesignSeparator}" VerticalAlignment="Top"/>
+                                        <Grid Margin="0 20 0 0">
+                                            <ToggleButton Style="{StaticResource LikeButton}"
                                                       ContentStringFormat="Нравится"
                                                       HorizontalAlignment="Left"
                                                       IsChecked="{Binding IsLiked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                       Command="{Binding DataContext.LikeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                       CommandParameter="{Binding}"/>
-                                        <ToggleButton Style="{StaticResource DislikeButton}"
+                                            <ToggleButton Style="{StaticResource DislikeButton}"
                                                       ContentStringFormat="Не рекомендовать"
                                                       HorizontalAlignment="Right"
                                                       IsChecked="{Binding IsDisliked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                       Command="{Binding DataContext.DislikeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                       CommandParameter="{Binding}"/>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </StackPanel>
-    </ScrollViewer>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+        <materialDesign:Snackbar x:Name="Snackbar" MessageQueue="{materialDesign:MessageQueue}"/>
+    </Grid>
 </Page>

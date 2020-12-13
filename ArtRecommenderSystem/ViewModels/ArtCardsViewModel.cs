@@ -78,6 +78,20 @@ namespace ArtRecommenderSystem.ViewModels
                 new PropertyChangedEventArgs(propertyName));
         }
 
+        public class SnackBarMessageDisplayEventArgs : EventArgs
+        {
+            public string Message { get; set; }
+        }
+
+        public event EventHandler<SnackBarMessageDisplayEventArgs>
+            SnackBarMessageDisplayRequested;
+
+        protected void OnSnackBarMessageDisplayRequest(string message)
+        {
+            SnackBarMessageDisplayRequested?.Invoke(this,
+                new SnackBarMessageDisplayEventArgs { Message = message});
+        }
+
         private static ArtCard BuildArtRecord(ArtLeaf leaf)
         {
             return new ArtCard
@@ -106,6 +120,9 @@ namespace ArtRecommenderSystem.ViewModels
                 }
 
                 _lastChangedTime = DateTime.Now;
+
+                OnSnackBarMessageDisplayRequest(
+                    "Вид искусства \"" + artCard.Name + "\" добавлен в раздел \"Понравившиеся\" Моей галереи");
             }
             else
             {
@@ -116,6 +133,10 @@ namespace ArtRecommenderSystem.ViewModels
                 }
 
                 _lastChangedTime = DateTime.Now;
+
+                OnSnackBarMessageDisplayRequest(
+                    "Вид искусства \'" + artCard.Name + "\" удалён из раздела " +
+                    "\"Понравившиеся\" Моей галереи");
             }
         }
 
@@ -131,6 +152,10 @@ namespace ArtRecommenderSystem.ViewModels
                     ArtCards.Remove(artCard);
                 }
 
+                OnSnackBarMessageDisplayRequest(
+                    "Вид искусства \"" + artCard.Name + "\" больше не будет " +
+                    "появляться в ваших рекомендациях");
+
                 _lastChangedTime = DateTime.Now;
             }
             else
@@ -140,6 +165,10 @@ namespace ArtRecommenderSystem.ViewModels
                 {
                     ArtCards.Remove(artCard);
                 }
+
+                OnSnackBarMessageDisplayRequest(
+                    "Вид искусства \"" + artCard.Name + "\" теперь " +
+                    "сможет появляться в ваших рекомендациях");
 
                 _lastChangedTime = DateTime.Now;
             }

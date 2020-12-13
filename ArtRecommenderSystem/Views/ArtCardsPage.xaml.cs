@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Threading.Tasks;
+using System.Windows.Controls;
 using ArtRecommenderSystem.ViewModels;
 
 namespace ArtRecommenderSystem.Views
@@ -12,12 +13,26 @@ namespace ArtRecommenderSystem.Views
         {
             InitializeComponent();
             DataContext = new ArtCardsViewModel();
+            ((ArtCardsViewModel) DataContext).SnackBarMessageDisplayRequested +=
+                (sender, e) =>
+                {
+                    var messageQueue = Snackbar.MessageQueue;
+                    Task.Factory.StartNew(() =>
+                        messageQueue.Enqueue(e.Message));
+                };
         }
 
         public ArtCardsPage(bool areFavorites)
         {
             InitializeComponent();
             DataContext = new ArtCardsViewModel(areFavorites);
+            ((ArtCardsViewModel)DataContext).SnackBarMessageDisplayRequested +=
+                (sender, e) =>
+                {
+                    var messageQueue = Snackbar.MessageQueue;
+                    Task.Factory.StartNew(() =>
+                        messageQueue.Enqueue(e.Message));
+                };
         }
 
         public void Activate()

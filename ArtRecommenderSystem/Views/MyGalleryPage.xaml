@@ -11,7 +11,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 0 0 8">
             <RadioButton x:Name="FavoritesToggleButton"
                          Style="{StaticResource MaterialDesignTabRadioButton}"
                          Margin="4" Padding="28 0 28 0" Content="ПОНРАВИВШИЕСЯ"
@@ -20,6 +20,6 @@
                          Margin="4" Padding="28 0 28 0" Content="ЧЕРНЫЙ СПИСОК"
                          Checked="BlacklistToggleButton_OnChecked"/>
         </StackPanel>
-        <Frame Grid.Row="1" x:Name="ContentFrame" Margin="10" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Row="1" x:Name="ContentFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Page>

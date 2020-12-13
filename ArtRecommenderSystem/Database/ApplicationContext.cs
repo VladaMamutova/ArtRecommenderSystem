@@ -46,7 +46,7 @@ namespace ArtRecommenderSystem.Database
                 lock (SyncRoot)
                 {
                     _instance = new ApplicationContext();
-                    _instance.SetUser("architect");
+                    _instance.SetUser("user");
                     _instance.Preferences.Load();
                 }
             }

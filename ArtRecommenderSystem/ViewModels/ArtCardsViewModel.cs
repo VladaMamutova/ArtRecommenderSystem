@@ -135,7 +135,7 @@ namespace ArtRecommenderSystem.ViewModels
                 _lastChangedTime = DateTime.Now;
 
                 OnSnackBarMessageDisplayRequest(
-                    "Вид искусства \'" + artCard.Name + "\" удалён из раздела " +
+                    "Вид искусства \"" + artCard.Name + "\" удалён из раздела " +
                     "\"Понравившиеся\" Моей галереи");
             }
         }

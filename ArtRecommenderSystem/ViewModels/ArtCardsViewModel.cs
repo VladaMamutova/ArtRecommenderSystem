@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,9 +12,12 @@ namespace ArtRecommenderSystem.ViewModels
 {
     class ArtCardsViewModel : INotifyPropertyChanged
     {
-        private List<ArtCard> _artCards;
+        private bool? _areFavorites;
+        private DateTime _lastChangedTime;
 
-        public List<ArtCard> ArtCards
+        private ObservableCollection<ArtCard> _artCards;
+
+        public ObservableCollection<ArtCard> ArtCards
         {
             get => _artCards;
             set
@@ -31,19 +36,7 @@ namespace ArtRecommenderSystem.ViewModels
                 return _likeCommand ??
                        (_likeCommand = new RelayCommand(o =>
                        {
-                           if (!(o is ArtCard artCard)) return;
-                           if (artCard.IsLiked)
-                           {
-                               artCard.IsDisliked = false;
-                               ApplicationContext.GetInstance()
-                                   .UpdatePreference(artCard.Id,
-                                       artCard.IsLiked);
-                           }
-                           else
-                           {
-                               ApplicationContext.GetInstance()
-                                   .RemovePreference(artCard.Id);
-                           }
+                           if (o is ArtCard artCard) Like(artCard);
                        }));
             }
         }
@@ -57,45 +50,23 @@ namespace ArtRecommenderSystem.ViewModels
                 return _dislikeCommand ??
                        (_dislikeCommand = new RelayCommand(o =>
                        {
-                           if (!(o is ArtCard artCard)) return;
-                           if (artCard.IsDisliked)
-                           {
-                               artCard.IsLiked = false;
-                               ApplicationContext.GetInstance()
-                                   .UpdatePreference(artCard.Id,
-                                       artCard.IsLiked);
-                           }
-                           else
-                           {
-                               ApplicationContext.GetInstance()
-                                   .RemovePreference(artCard.Id);
-                           }
+                           if (o is ArtCard artCard) Dislike(artCard);
                        }));
             }
         }
 
-        public ArtCardsViewModel()
+        public ArtCardsViewModel(bool? areFavorites = null)
         {
-            ArtCards = new List<ArtCard>(ApplicationContext
-                .GetInstance().ArtLeaves.Select(BuildArtRecord));
-            SetUserPreferences();
-        }
+            _areFavorites = areFavorites;
+            _lastChangedTime = DateTime.MinValue;
 
-        public ArtCardsViewModel(bool isFavorite)
-        {
-            var artLeaves = ApplicationContext.GetInstance().ArtLeaves;
-            var preferences = ApplicationContext.GetInstance()
-                .GetUserPreferences(isFavorite);
-
-            ArtCards = new List<ArtCard>();
-            foreach (var preference in preferences)
+            if (!areFavorites.HasValue)
             {
-                var artLeaf = artLeaves.Find(art => art.Id == preference.ArtId);
-                var artCard = BuildArtRecord(artLeaf);
-                artCard.IsLiked = isFavorite;
-                artCard.IsDisliked = !isFavorite;
-                ArtCards.Add(artCard);
+                ArtCards = new ObservableCollection<ArtCard>(ApplicationContext
+                    .GetInstance().ArtLeaves.Select(BuildArtRecord));
             }
+
+            UpdateArtCards();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -122,16 +93,124 @@ namespace ArtRecommenderSystem.ViewModels
             };
         }
 
+        private void Like(ArtCard artCard)
+        {
+            if (artCard.IsLiked)
+            {
+                artCard.IsDisliked = false;
+                ApplicationContext.GetInstance()
+                    .UpdatePreference(artCard.Id, artCard.IsLiked);
+                if (_areFavorites.HasValue && !_areFavorites.Value)
+                {
+                    ArtCards.Remove(artCard);
+                }
 
-        private void SetUserPreferences()
+                _lastChangedTime = DateTime.Now;
+            }
+            else
+            {
+                ApplicationContext.GetInstance().RemovePreference(artCard.Id);
+                if (_areFavorites.HasValue && _areFavorites.Value)
+                {
+                    ArtCards.Remove(artCard);
+                }
+
+                _lastChangedTime = DateTime.Now;
+            }
+        }
+
+        private void Dislike(ArtCard artCard)
+        {
+            if (artCard.IsDisliked)
+            {
+                artCard.IsLiked = false;
+                ApplicationContext.GetInstance()
+                    .UpdatePreference(artCard.Id, artCard.IsLiked);
+                if (_areFavorites.HasValue && _areFavorites.Value)
+                {
+                    ArtCards.Remove(artCard);
+                }
+
+                _lastChangedTime = DateTime.Now;
+            }
+            else
+            {
+                ApplicationContext.GetInstance().RemovePreference(artCard.Id);
+                if (_areFavorites.HasValue && !_areFavorites.Value)
+                {
+                    ArtCards.Remove(artCard);
+                }
+
+                _lastChangedTime = DateTime.Now;
+            }
+        }
+
+        private void UpdateUserPreferences()
         {
             var preferences = ApplicationContext.GetInstance()
                 .GetUserPreferences();
+
+            foreach (var artCard in _artCards)
+            {
+                artCard.IsLiked = false;
+                artCard.IsDisliked = false; ;
+            }
+
             foreach (var preference in preferences)
             {
-                var artCard = _artCards.Find(art => art.Id == preference.ArtId);
+                var artCard =
+                    _artCards.First(art => art.Id == preference.ArtId);
                 artCard.IsLiked = preference.Like == 1;
                 artCard.IsDisliked = preference.Like == 0;
+            }
+        }
+
+        private bool NeedToUpdate()
+        {
+            if (_areFavorites.HasValue)
+            {
+                return _areFavorites.Value
+                    ? ApplicationContext.GetInstance().FavoritesChangedTime >
+                      _lastChangedTime
+                    : ApplicationContext.GetInstance().BlacklistChangedTime >
+                      _lastChangedTime;
+            }
+
+            return ApplicationContext.GetInstance().FavoritesChangedTime >
+                   _lastChangedTime ||
+                   ApplicationContext.GetInstance().BlacklistChangedTime >
+                   _lastChangedTime;
+        }
+
+        public void UpdateArtCards()
+        {
+            if (NeedToUpdate())
+            {
+                if (_areFavorites.HasValue)
+                {
+                    var preferences = ApplicationContext.GetInstance()
+                        .GetUserPreferences(_areFavorites.Value);
+                    var artCards = new List<ArtCard>();
+
+                    var artLeaves = ApplicationContext.GetInstance().ArtLeaves;
+                    foreach (var preference in preferences)
+                    {
+                        var artLeaf =
+                            artLeaves.Find(art => art.Id == preference.ArtId);
+                        var artCard = BuildArtRecord(artLeaf);
+                        artCard.IsLiked = _areFavorites.Value;
+                        artCard.IsDisliked = !_areFavorites.Value;
+                        artCards.Add(artCard);
+                    }
+
+                    ArtCards = new ObservableCollection<ArtCard>(artCards);
+                }
+                else
+                {
+                    UpdateUserPreferences();
+                }
+
+                _lastChangedTime = DateTime.Now;
             }
         }
     }

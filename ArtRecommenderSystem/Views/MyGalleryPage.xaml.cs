@@ -8,26 +8,41 @@ namespace ArtRecommenderSystem.Views
     /// </summary>
     public partial class MyGalleryPage : Page
     {
-        private readonly ArtCardsPage _favoritePage;
+        private readonly ArtCardsPage _favoritesPage;
         private readonly ArtCardsPage _blacklistPage;
         
         public MyGalleryPage()
         {
             InitializeComponent();
-            _favoritePage = new ArtCardsPage(true);
+            _favoritesPage = new ArtCardsPage(true);
             _blacklistPage = new ArtCardsPage(false);
 
-            PreferencesToggleButton.IsChecked = true;
+            FavoritesToggleButton.IsChecked = true;
         }
 
-        private void PreferencesToggleButton_OnChecked(object sender, RoutedEventArgs e)
+        private void FavoritesToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(_favoritePage);
+            ContentFrame.Navigate(_favoritesPage);
+            _favoritesPage.Activate();
         }
 
         private void BlacklistToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(_blacklistPage);
+            _blacklistPage.Activate();
+        }
+
+        public void Activate()
+        {
+            if (FavoritesToggleButton.IsChecked != null &&
+                FavoritesToggleButton.IsChecked.Value)
+            {
+                _favoritesPage.Activate();
+            }
+            else
+            {
+                _blacklistPage.Activate();
+            }
         }
     }
 }

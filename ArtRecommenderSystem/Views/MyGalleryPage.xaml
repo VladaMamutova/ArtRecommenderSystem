@@ -12,10 +12,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <RadioButton x:Name="PreferencesToggleButton"
+            <RadioButton x:Name="FavoritesToggleButton"
                          Style="{StaticResource MaterialDesignTabRadioButton}"
                          Margin="4" Padding="28 0 28 0" Content="ПОНРАВИВШИЕСЯ"
-                         Checked="PreferencesToggleButton_OnChecked"/>
+                         Checked="FavoritesToggleButton_OnChecked"/>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                          Margin="4" Padding="28 0 28 0" Content="ЧЕРНЫЙ СПИСОК"
                          Checked="BlacklistToggleButton_OnChecked"/>

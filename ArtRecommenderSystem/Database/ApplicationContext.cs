@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace ArtRecommenderSystem.Database
 
         public User CurrentUser { get; private set; }
 
+        public DateTime FavoritesChangedTime { get; private set; }
+        public DateTime BlacklistChangedTime { get; private set; }
+
         private ApplicationContext() : base("DefaultConnection")
         {
             var tree = File.ReadAllText("art.json");
@@ -30,6 +34,9 @@ namespace ArtRecommenderSystem.Database
             root.InitParents(new string[0]);
 
             ArtLeaves = new List<ArtLeaf>(root.GetAllLeaves());
+
+            FavoritesChangedTime = DateTime.Now;
+            BlacklistChangedTime = DateTime.Now;
         }
 
         public static ApplicationContext GetInstance()
@@ -46,7 +53,7 @@ namespace ArtRecommenderSystem.Database
 
             return _instance;
         }
-        
+
         public bool SetUser(string nickname)
         {
             CurrentUser =
@@ -82,6 +89,9 @@ namespace ArtRecommenderSystem.Database
                 preference.Like = isLiked ? 1 : 0;
                 Entry(preference).State = EntityState.Modified;
                 SaveChanges();
+
+                FavoritesChangedTime = DateTime.Now;
+                BlacklistChangedTime = DateTime.Now;
             }
             else
             {
@@ -89,6 +99,9 @@ namespace ArtRecommenderSystem.Database
                     new Preference(CurrentUser.Id, artId, isLiked ? 1 : 0);
                 Preferences.Add(newPreference);
                 SaveChanges();
+
+                if (isLiked) FavoritesChangedTime = DateTime.Now;
+                else BlacklistChangedTime = DateTime.Now;
             }
         }
 
@@ -103,6 +116,8 @@ namespace ArtRecommenderSystem.Database
             {
                 Preferences.Remove(preference);
                 SaveChanges();
+                if (preference.Like == 1) FavoritesChangedTime = DateTime.Now;
+                else BlacklistChangedTime = DateTime.Now;
             }
         }
     }

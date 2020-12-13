@@ -14,10 +14,15 @@ namespace ArtRecommenderSystem.Views
             DataContext = new ArtCardsViewModel();
         }
 
-        public ArtCardsPage(bool isFavorite)
+        public ArtCardsPage(bool areFavorites)
         {
             InitializeComponent();
-            DataContext = new ArtCardsViewModel(isFavorite);
+            DataContext = new ArtCardsViewModel(areFavorites);
+        }
+
+        public void Activate()
+        {
+            ((ArtCardsViewModel)DataContext).UpdateArtCards();
         }
     }
 }

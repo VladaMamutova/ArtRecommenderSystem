@@ -52,6 +52,7 @@ namespace ArtRecommenderSystem.Views
         {
             MyGalleryRadioButton.IsChecked = false;
             ContentFrame.Navigate(_mainPage);
+            _mainPage.Activate();
         }
 
         private void RecommendationPage_OnChecked(object sender, RoutedEventArgs e)
@@ -65,6 +66,7 @@ namespace ArtRecommenderSystem.Views
             MainRadioButton.IsChecked = false;
             RecommendationRadioButton.IsChecked = false;
             ContentFrame.Navigate(_myGalleryPage);
+            _myGalleryPage.Activate();
         }
 
         private void SetUser(string login)

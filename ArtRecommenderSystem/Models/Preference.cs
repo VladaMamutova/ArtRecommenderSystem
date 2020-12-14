@@ -20,5 +20,10 @@ namespace ArtRecommenderSystem.Models
             ArtId = artId;
             Like = like;
         }
+
+        public override string ToString()
+        {
+            return $"Id={Id}, UserId={UserId}, ArtId={ArtId}, Like={Like}";
+        }
     }
 }

@@ -86,6 +86,7 @@
     </ApplicationDefinition>
     <Compile Include="Database\ApplicationContext.cs" />
     <Compile Include="Logic\ArtHelper.cs" />
+    <Compile Include="Logic\RecommendationEngine.cs" />
     <Compile Include="Logic\ArtNodeConverter.cs" />
     <Compile Include="Models\ArtItem.cs" />
     <Compile Include="Models\ArtLeaf.cs" />
@@ -135,7 +136,7 @@
     </Page>
     <Page Include="Views\RecommendationPage.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

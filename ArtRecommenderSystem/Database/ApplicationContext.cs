@@ -17,7 +17,7 @@ namespace ArtRecommenderSystem.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Preference> Preferences { get; set; }
 
-        public List<ArtLeaf> ArtLeaves { get; }
+        public List<ArtLeaf> Arts { get; }
 
         public User CurrentUser { get; private set; }
 
@@ -33,7 +33,7 @@ namespace ArtRecommenderSystem.Database
             //root.InitParents(new[] { root.Name });
             root.InitParents(new string[0]);
 
-            ArtLeaves = new List<ArtLeaf>(root.GetAllLeaves());
+            Arts = new List<ArtLeaf>(root.GetAllLeaves());
 
             FavoritesChangedTime = DateTime.Now;
             BlacklistChangedTime = DateTime.Now;
@@ -54,6 +54,15 @@ namespace ArtRecommenderSystem.Database
             return _instance;
         }
 
+        private List<Preference> GetPreferences(bool isFavorite)
+        {
+            if (CurrentUser == null) return new List<Preference>();
+            return Preferences.Where(pref =>
+                    pref.UserId == CurrentUser.Id &&
+                    pref.Like == (isFavorite ? 1 : 0))
+                .ToList();
+        }
+
         public bool SetUser(string nickname)
         {
             CurrentUser =
@@ -61,20 +70,27 @@ namespace ArtRecommenderSystem.Database
             return CurrentUser != null;
         }
 
-        public List<Preference> GetUserPreferences()
+        public List<Preference> GetPreferences()
         {
             if (CurrentUser == null) return new List<Preference>();
             return Preferences.Where(pref => pref.UserId == CurrentUser.Id)
                 .ToList();
         }
 
-        public List<Preference> GetUserPreferences(bool isFavorite)
+        public List<Preference> GetFavorites()
         {
-            if (CurrentUser == null) return new List<Preference>();
-            return Preferences.Where(pref =>
-                    pref.UserId == CurrentUser.Id &&
-                    pref.Like == (isFavorite ? 1 : 0))
-                .ToList();
+            return GetPreferences(true);
+        }
+
+        public List<Preference> GetBlacklist()
+        {
+            return GetPreferences(false);
+        }
+
+        public List<Preference> GetUserFavorites(int id)
+        {
+            return Preferences
+                .Where(pref => pref.UserId == id && pref.Like == 1).ToList();
         }
 
         public void UpdatePreference(int artId, bool isLiked)
@@ -119,6 +135,13 @@ namespace ArtRecommenderSystem.Database
                 if (preference.Like == 1) FavoritesChangedTime = DateTime.Now;
                 else BlacklistChangedTime = DateTime.Now;
             }
+        }
+
+        public List<User> GetUsersExceptCurrent()
+        {
+            return CurrentUser == null
+                ? Users.Local.ToList()
+                : Users.Where(user => user.Id != CurrentUser.Id).ToList();
         }
     }
 }

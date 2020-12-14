@@ -12,7 +12,7 @@ namespace ArtRecommenderSystem.Views
         public ArtCardsPage()
         {
             InitializeComponent();
-            DataContext = new ArtCardsViewModel();
+            DataContext = new ArtCardsViewModel(false, null);
             ((ArtCardsViewModel) DataContext).SnackBarMessageDisplayRequested +=
                 (sender, e) =>
                 {
@@ -22,10 +22,10 @@ namespace ArtRecommenderSystem.Views
                 };
         }
 
-        public ArtCardsPage(bool areFavorites)
+        public ArtCardsPage(bool recommendation, bool? areFavorites)
         {
             InitializeComponent();
-            DataContext = new ArtCardsViewModel(areFavorites);
+            DataContext = new ArtCardsViewModel(recommendation, areFavorites);
             ((ArtCardsViewModel)DataContext).SnackBarMessageDisplayRequested +=
                 (sender, e) =>
                 {

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using ArtRecommenderSystem.Database;
+using ArtRecommenderSystem.Logic;
 using ArtRecommenderSystem.Models;
 using ArtRecommenderSystem.Utilities;
 
@@ -13,6 +14,7 @@ namespace ArtRecommenderSystem.ViewModels
     class ArtCardsViewModel : INotifyPropertyChanged
     {
         private bool? _areFavorites;
+        private bool _areRecommendations;
         private DateTime _lastChangedTime;
 
         private ObservableCollection<ArtCard> _artCards;
@@ -55,15 +57,16 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
-        public ArtCardsViewModel(bool? areFavorites = null)
+        public ArtCardsViewModel(bool areRecommendations, bool? areFavorites)
         {
             _areFavorites = areFavorites;
             _lastChangedTime = DateTime.MinValue;
+            _areRecommendations = areRecommendations;
 
             if (!areFavorites.HasValue)
             {
                 ArtCards = new ObservableCollection<ArtCard>(ApplicationContext
-                    .GetInstance().ArtLeaves.Select(BuildArtRecord));
+                    .GetInstance().Arts.Select(BuildArtRecord));
             }
 
             UpdateArtCards();
@@ -89,7 +92,7 @@ namespace ArtRecommenderSystem.ViewModels
         protected void OnSnackBarMessageDisplayRequest(string message)
         {
             SnackBarMessageDisplayRequested?.Invoke(this,
-                new SnackBarMessageDisplayEventArgs { Message = message});
+                new SnackBarMessageDisplayEventArgs {Message = message});
         }
 
         private static ArtCard BuildArtRecord(ArtLeaf leaf)
@@ -122,7 +125,8 @@ namespace ArtRecommenderSystem.ViewModels
                 _lastChangedTime = DateTime.Now;
 
                 OnSnackBarMessageDisplayRequest(
-                    "Вид искусства \"" + artCard.Name + "\" добавлен в раздел \"Понравившиеся\" Моей галереи");
+                    "Вид искусства \"" + artCard.Name +
+                    "\" добавлен в раздел \"Понравившиеся\" Моей галереи");
             }
             else
             {
@@ -135,7 +139,8 @@ namespace ArtRecommenderSystem.ViewModels
                 _lastChangedTime = DateTime.Now;
 
                 OnSnackBarMessageDisplayRequest(
-                    "Вид искусства \"" + artCard.Name + "\" удалён из раздела " +
+                    "Вид искусства \"" + artCard.Name +
+                    "\" удалён из раздела " +
                     "\"Понравившиеся\" Моей галереи");
             }
         }
@@ -148,6 +153,10 @@ namespace ArtRecommenderSystem.ViewModels
                 ApplicationContext.GetInstance()
                     .UpdatePreference(artCard.Id, artCard.IsLiked);
                 if (_areFavorites.HasValue && _areFavorites.Value)
+                {
+                    ArtCards.Remove(artCard);
+                }
+                 if (_areRecommendations)
                 {
                     ArtCards.Remove(artCard);
                 }
@@ -176,13 +185,12 @@ namespace ArtRecommenderSystem.ViewModels
 
         private void UpdateUserPreferences()
         {
-            var preferences = ApplicationContext.GetInstance()
-                .GetUserPreferences();
+            var preferences = ApplicationContext.GetInstance().GetPreferences();
 
             foreach (var artCard in _artCards)
             {
                 artCard.IsLiked = false;
-                artCard.IsDisliked = false; ;
+                artCard.IsDisliked = false;
             }
 
             foreach (var preference in preferences)
@@ -196,7 +204,7 @@ namespace ArtRecommenderSystem.ViewModels
 
         private bool NeedToUpdate()
         {
-            if (_areFavorites.HasValue)
+            if (_areFavorites.HasValue && !_areRecommendations)
             {
                 return _areFavorites.Value
                     ? ApplicationContext.GetInstance().FavoritesChangedTime >
@@ -215,28 +223,50 @@ namespace ArtRecommenderSystem.ViewModels
         {
             if (NeedToUpdate())
             {
-                if (_areFavorites.HasValue)
+                if (_areRecommendations)
                 {
-                    var preferences = ApplicationContext.GetInstance()
-                        .GetUserPreferences(_areFavorites.Value);
-                    var artCards = new List<ArtCard>();
+                    ArtCards = new ObservableCollection<ArtCard>();
+                    var arts = ApplicationContext.GetInstance().Arts;
+                    var recommendedArtIds =
+                        RecommendationEngine.CollaborativeFiltering();
 
-                    var artLeaves = ApplicationContext.GetInstance().ArtLeaves;
-                    foreach (var preference in preferences)
+                    var blackList = ApplicationContext.GetInstance()
+                        .GetBlacklist();
+                    foreach (var id in recommendedArtIds)
                     {
-                        var artLeaf =
-                            artLeaves.Find(art => art.Id == preference.ArtId);
-                        var artCard = BuildArtRecord(artLeaf);
-                        artCard.IsLiked = _areFavorites.Value;
-                        artCard.IsDisliked = !_areFavorites.Value;
-                        artCards.Add(artCard);
+                        var artLeaf = arts.Find(art => art.Id == id);
+                        if (blackList.All(art => art.ArtId != artLeaf.Id))
+                        {
+                            ArtCards.Add(BuildArtRecord(artLeaf));
+                        }
                     }
 
-                    ArtCards = new ObservableCollection<ArtCard>(artCards);
                 }
                 else
                 {
-                    UpdateUserPreferences();
+                    if (_areFavorites.HasValue)
+                    {
+                        var preferences = _areFavorites.Value
+                            ? ApplicationContext.GetInstance().GetFavorites()
+                            : ApplicationContext.GetInstance().GetBlacklist();
+                        var artCards = new List<ArtCard>();
+
+                        var arts = ApplicationContext.GetInstance().Arts;
+                        foreach (var preference in preferences)
+                        {
+                            var artCard = BuildArtRecord(
+                                arts.Find(art => art.Id == preference.ArtId));
+                            artCard.IsLiked = _areFavorites.Value;
+                            artCard.IsDisliked = !_areFavorites.Value;
+                            artCards.Add(artCard);
+                        }
+
+                        ArtCards = new ObservableCollection<ArtCard>(artCards);
+                    }
+                    else
+                    {
+                        UpdateUserPreferences();
+                    }
                 }
 
                 _lastChangedTime = DateTime.Now;

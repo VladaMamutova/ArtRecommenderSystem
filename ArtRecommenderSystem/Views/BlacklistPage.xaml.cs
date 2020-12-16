@@ -3,18 +3,18 @@
 namespace ArtRecommenderSystem.Views
 {
     /// <summary>
-    /// Логика взаимодействия для RecommendationPage.xaml
+    /// Логика взаимодействия для BlacklistPage.xaml
     /// </summary>
-    public partial class RecommendationPage : ArtCardsPage
+    public partial class BlacklistPage : ArtCardsPage
     {
-        public RecommendationPage()
+        public BlacklistPage()
         {
             InitializeComponent();
         }
 
         protected override ArtCardsViewModel CreateViewModel()
         {
-            return new RecommendationsViewModel();
+            return new BlacklistViewModel();
         }
     }
 }

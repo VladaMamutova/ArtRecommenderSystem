@@ -7,6 +7,17 @@ namespace ArtRecommenderSystem.ViewModels
     public class ArtCard : INotifyPropertyChanged
     {
         private bool _isLiked;
+        private bool _isDisliked;
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string[] Parents { get; set; }
+        public int Date { get; set; }
+        public int MuseumNumber { get; set; }
+        public bool AreMasterClassesHeld { get; set; }
+        public PopularityEnum Popularity { get; set; }
+        public Genres[] Genres { get; set; }
+
         public bool IsLiked
         {
             get => _isLiked;
@@ -17,7 +28,6 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
-        private bool _isDisliked;
         public bool IsDisliked
         {
             get => _isDisliked;
@@ -28,15 +38,6 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string[] Parents { get; set; }
-        public int Date { get; set; }
-        public int MuseumNumber { get; set; }
-        public bool AreMasterClassesHeld { get; set; }
-        public PopularityEnum Popularity { get; set; }
-        public Genres[] Genres { get; set; }
-        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(

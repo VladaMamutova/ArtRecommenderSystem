@@ -14,8 +14,8 @@ namespace ArtRecommenderSystem.Views
         public MyGalleryPage()
         {
             InitializeComponent();
-            _favoritesPage = new ArtCardsPage(false, true);
-            _blacklistPage = new ArtCardsPage(false, false);
+            _favoritesPage = new FavoritesPage();
+            _blacklistPage = new BlacklistPage();
 
             FavoritesToggleButton.IsChecked = true;
         }

@@ -1,4 +1,4 @@
-﻿<views:ArtCardsPage x:Class="ArtRecommenderSystem.Views.RecommendationPage"
+﻿<views:ArtCardsPage x:Class="ArtRecommenderSystem.Views.MainArtCardsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -166,4 +166,3 @@
         <materialDesign:Snackbar HorizontalAlignment="Stretch" MessageQueue="{Binding MessageQueue}"/>
     </Grid>
 </views:ArtCardsPage>
-

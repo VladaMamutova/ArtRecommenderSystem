@@ -3,18 +3,18 @@
 namespace ArtRecommenderSystem.Views
 {
     /// <summary>
-    /// Логика взаимодействия для RecommendationPage.xaml
+    /// Логика взаимодействия для FavoritesPage.xaml
     /// </summary>
-    public partial class RecommendationPage : ArtCardsPage
+    public partial class FavoritesPage : ArtCardsPage
     {
-        public RecommendationPage()
+        public FavoritesPage()
         {
             InitializeComponent();
         }
 
         protected override ArtCardsViewModel CreateViewModel()
         {
-            return new RecommendationsViewModel();
+            return new FavoritesViewModel();
         }
     }
 }

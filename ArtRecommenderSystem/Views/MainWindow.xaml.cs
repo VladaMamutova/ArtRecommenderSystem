@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ArtRecommenderSystem.Database;
 
 namespace ArtRecommenderSystem.Views
 {
@@ -18,8 +17,8 @@ namespace ArtRecommenderSystem.Views
         {
             InitializeComponent();
 
-            _mainPage = new ArtCardsPage();
-            _recommendationPage = new ArtCardsPage(true, null);
+            _mainPage = new MainArtCardsPage();
+            _recommendationPage = new RecommendationPage();
             _myGalleryPage = new MyGalleryPage();
             MainRadioButton.IsChecked = true;
         }
@@ -68,16 +67,6 @@ namespace ArtRecommenderSystem.Views
             RecommendationRadioButton.IsChecked = false;
             ContentFrame.Navigate(_myGalleryPage);
             _myGalleryPage.Activate();
-        }
-
-        private void SetUser(string login)
-        {
-            if (ApplicationContext.GetInstance().SetUser(login) !=
-                true)
-            {
-                MessageBox.Show("Пользователь с логином \"" + login +
-                                "\" не найден.");
-            }
         }
     }
 }

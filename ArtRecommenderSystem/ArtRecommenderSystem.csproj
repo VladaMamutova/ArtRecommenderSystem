@@ -105,13 +105,37 @@
     <Compile Include="Utilities\StringArrayToStringConverter.cs" />
     <Compile Include="ViewModels\ArtCard.cs" />
     <Compile Include="ViewModels\ArtCardsViewModel.cs" />
+    <Compile Include="ViewModels\BlacklistViewModel.cs" />
+    <Compile Include="ViewModels\FavoritesViewModel.cs" />
+    <Compile Include="ViewModels\IArtCardsViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\RecommendationsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ArtCardsPage.cs" />
+    <Compile Include="Views\BlacklistPage.xaml.cs">
+      <DependentUpon>BlacklistPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FavoritesPage.xaml.cs">
+      <DependentUpon>FavoritesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainArtCardsPage.xaml.cs">
+      <DependentUpon>MainArtCardsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MyGalleryPage.xaml.cs">
       <DependentUpon>MyGalleryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecommendationPage.xaml.cs">
       <DependentUpon>RecommendationPage.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ArtCardsPage.xaml">
+    <Page Include="Views\BlacklistPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FavoritesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainArtCardsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,9 +146,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\ArtCardsPage.xaml.cs">
-      <DependentUpon>ArtCardsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

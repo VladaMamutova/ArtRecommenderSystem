@@ -7,8 +7,20 @@ using ArtRecommenderSystem.Models;
 
 namespace ArtRecommenderSystem.ViewModels
 {
-    class RecommendationsViewModel: ArtCardsViewModel
+    class RecommendationsViewModel : ArtCardsViewModel
     {
+        private string _interests;
+
+        public string Interests
+        {
+            get => _interests;
+            set
+            {
+                _interests = value;
+                OnPropertyChanged(nameof(Interests));
+            }
+        }
+
         public override void Like(ArtCard artCard)
         {
             if (artCard.IsLiked)
@@ -63,12 +75,13 @@ namespace ArtRecommenderSystem.ViewModels
             if (IsUpToDate()) return;
             {
                 var arts = ApplicationContext.GetInstance().Arts;
-                var recommendedArtIds =
-                    RecommendationEngine.CollaborativeFiltering();
+                var collaborativeFiltering = new RecommendationEngine.CollaborativeFiltering();
+                var recommendations =
+                    collaborativeFiltering.GetRecommendations();
                 var blackList = ApplicationContext.GetInstance().GetBlacklist();
 
                 ArtCards = new ObservableCollection<ArtCard>();
-                foreach (var id in recommendedArtIds)
+                foreach (var id in recommendations.ArtIdList)
                 {
                     var artLeaf = arts.Find(art => art.Id == id);
                     if (blackList.All(art => art.ArtId != artLeaf.Id))
@@ -76,6 +89,8 @@ namespace ArtRecommenderSystem.ViewModels
                         ArtCards.Add(BuildArtRecord(artLeaf));
                     }
                 }
+
+                Interests = string.Join(", ", recommendations.UserInterests);
 
                 LastChangedTime = DateTime.Now;
             }

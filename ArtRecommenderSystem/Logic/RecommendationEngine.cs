@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ArtRecommenderSystem.Database;
 
@@ -6,62 +7,88 @@ namespace ArtRecommenderSystem.Logic
 {
     public static class RecommendationEngine
     {
-        public static List<int> CollaborativeFiltering()
+        public class CollaborativeFiltering
         {
-            // предпочтения текущего пользователя
-            var currentFavorites =
-                ApplicationContext.GetInstance().GetFavorites();
-
-            var users = ApplicationContext.GetInstance().GetUsersExceptCurrent();
-            var similarityScore = new Dictionary<int, int>();
-            for (int i = 0; i < users.Count; i++)
+            public struct Recommendations
             {
-                // предпочтения другого пользователя
-                var favorites = ApplicationContext.GetInstance()
-                    .GetUserFavorites(users[i].Id);
-                var score = 0;
+                public List<string> UserInterests { get; }
+                public List<int> ArtIdList { get; }
 
-                // Находим число совпадений в предпочтениях текущего и другого пользователей.
-                foreach (var currentFavorite in currentFavorites)
+                public Recommendations(List<string> userInterests,
+                    List<int> artIdList)
                 {
-                    if (favorites.Any(favorite =>
-                        favorite.ArtId == currentFavorite.ArtId))
+                    UserInterests = userInterests;
+                    ArtIdList = artIdList;
+                }
+            }
+
+            public Recommendations GetRecommendations()
+            {
+                // Получаем предпочтения текущего пользователя.
+                var currentFavorites =
+                    ApplicationContext.GetInstance().GetFavorites();
+
+                var users = ApplicationContext.GetInstance()
+                    .GetUsersExceptCurrent();
+
+                // Получаем предпочтения других пользователей и
+                // находим число совпадений в предпочтениях с текущим.
+                var userScores = new Dictionary<int, int>();
+                foreach (var user in users)
+                {
+                    var favorites = ApplicationContext.GetInstance()
+                        .GetUserFavorites(user.Id);
+                    var score = 0;
+                    foreach (var currentFavorite in currentFavorites)
                     {
-                        score++;
+                        if (favorites.Any(favorite =>
+                            favorite.ArtId == currentFavorite.ArtId))
+                        {
+                            score++;
+                        }
+                    }
+
+                    if (score > 0) userScores.Add(user.Id, score);
+                }
+
+                // Выбираем пользователей с похожими вкусами, чьи предпочтения будем рекумендовать.
+                // В данном случае, берём пользователей с максимальным числом совпадений.
+                var maxUserScores =
+                    userScores.Where(userScore =>
+                        userScore.Value ==
+                        userScores.Max(score => score.Value));
+
+                // Получаем идентификаторы видов искусств в предпочтениях похожих пользователей.
+                var recommendedArtIds = new List<int>();
+                var interests = new List<string>();
+                foreach (var userScore in maxUserScores)
+                {
+                    recommendedArtIds.AddRange(ApplicationContext.GetInstance()
+                        .GetUserFavorites(userScore.Key)
+                        .Select(favorite => favorite.ArtId));
+                    interests.AddRange(users
+                        .Find(user => user.Id == userScore.Key)
+                        .Interests.Split(new[] {", "},
+                            StringSplitOptions.RemoveEmptyEntries));
+                }
+
+                recommendedArtIds = recommendedArtIds.Distinct().ToList();
+                interests = interests.Distinct().ToList();
+
+                // Фильтруем список искусств, оставляя только те, которые
+                // текущий пользователь ещё не занёс к себе в предпочтения.
+                var recommendationIdList = new List<int>();
+                foreach (var artId in recommendedArtIds)
+                {
+                    if (currentFavorites.All(
+                        favorite => favorite.ArtId != artId))
+                    {
+                        recommendationIdList.Add(artId);
                     }
                 }
 
-                if (score > 0) similarityScore.Add(i, score);
+                return new Recommendations(interests, recommendationIdList);
             }
-
-            // Выбираем пользователей с похожими вкусами, чьи предпочтения будем рекумендовать.
-            // В данном случае, берём пользователей с максимальным числом совпадений.
-            var maxSimilarityScores =
-                similarityScore.Where(score =>
-                    score.Value == similarityScore.Max(s => s.Value));
-
-            // Получаем идентификаторы видов искусств в предпочтениях похожих пользователей.
-            var recommendedArtIds = new List<int>();
-            foreach (var score in maxSimilarityScores)
-            {
-                recommendedArtIds.AddRange(ApplicationContext.GetInstance()
-                    .GetUserFavorites(users[score.Key].Id)
-                    .Select(favorite => favorite.ArtId));
-            }
-            recommendedArtIds = recommendedArtIds.Distinct().ToList();
-
-            // Фильтруем список искусств, оставляя только те, которые
-            // текущий пользователь ещё не занёс к себе в предпочтения.
-            var recommendationIdList = new List<int>();
-            foreach (var artId in recommendedArtIds)
-            {
-                if (currentFavorites.All(favorite => favorite.ArtId != artId))
-                {
-                    recommendationIdList.Add(artId);
-                }
-            }
-
-            return recommendationIdList;
         }
     }
 }

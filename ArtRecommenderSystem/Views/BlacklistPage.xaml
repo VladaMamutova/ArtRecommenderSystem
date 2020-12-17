@@ -32,12 +32,12 @@
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
                                     <Setter Property="Background" TargetName="Root" Value="{StaticResource PrimaryHueLightBrush}"/>
                                     <Setter Property="Kind" TargetName="Icon" Value="Heart" />
-                                    <Setter Property="ToolTip" Value="Вам нравится этот вид искусства, а ещё он добавлен в раздел &quot;Понравившиеся&quot; Моей галереи" />
+                                    <Setter Property="ToolTip" Value="Вам нравится этот вид искусства, а ещё он добавлен в раздел &quot;Избранное&quot; Моей галереи" />
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>
                                     <Setter Property="Kind" TargetName="Icon" Value="HeartOutline" />
-                                    <Setter Property="ToolTip" Value="Сделайте рекомендации точнее и добавьте этот вид искусства в раздел &quot;Понравившиеся&quot; Моей галереи" />
+                                    <Setter Property="ToolTip" Value="Сделайте рекомендации точнее и добавьте этот вид искусства в &quot;Избранное&quot;" />
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
@@ -61,7 +61,7 @@
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryHueLightForegroundBrush}"/>
                                     <Setter Property="Background" TargetName="Root" Value="{StaticResource AttentionToActionBrush}"/>
-                                    <Setter Property="ToolTip" Value="Этот вид искусства добавлен в Черный список Моей галереи и больше не отображается в ваших рекомендациях" />
+                                    <Setter Property="ToolTip" Value="Этот вид искусства добавлен в &quot;Черный список&quot; Моей галереи и больше не отображается в ваших рекомендациях" />
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Foreground" Value="{StaticResource MaterialDesignBodyLight}"/>

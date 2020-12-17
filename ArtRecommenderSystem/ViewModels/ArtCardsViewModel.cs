@@ -63,27 +63,27 @@ namespace ArtRecommenderSystem.ViewModels
         {
             OnSnackBarMessageDisplayRequest(
                 $"Вид искусства \"{artCardName}\" добавлен " +
-                "в раздел \"Понравившиеся\" Моей галереи");
+                "в раздел \"Избранное\" Моей галереи");
         }
 
         public void ShowRemoveLikeMessage(string artCardName)
         {
             OnSnackBarMessageDisplayRequest(
                 $"Вид искусства \"{artCardName}\" удалён из раздела " +
-                "\"Понравившиеся\" Моей галереи");
+                "\"Избранное\" Моей галереи");
         }
 
         public void ShowDislikeMessage(string artCardName)
         {
             OnSnackBarMessageDisplayRequest(
-                $"Вид искусства \"{artCardName}\" добавлен в \"Чёрный список\" и больше не будет " +
+                $"Вид искусства \"{artCardName}\" добавлен в \"Чёрный список\" Моей галерии и больше не будет " +
                 "появляться в ваших рекомендациях");
         }
 
         public void ShowRemoveDislikeMessage(string artCardName)
         {
             OnSnackBarMessageDisplayRequest(
-                $"Вид искусства \"{artCardName}\" удалён из \"Чёрного списка\" и теперь " +
+                $"Вид искусства \"{artCardName}\" удалён из \"Чёрного списка\" Моей галереи и теперь " +
                 "сможет появляться в ваших рекомендациях");
         }
     }

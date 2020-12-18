@@ -86,8 +86,12 @@
     </ApplicationDefinition>
     <Compile Include="Database\ApplicationContext.cs" />
     <Compile Include="Logic\ArtHelper.cs" />
-    <Compile Include="Logic\RecommendationEngine.cs" />
+    <Compile Include="Logic\CollaborativeFiltering.cs" />
+    <Compile Include="Logic\ContentBasedFiltering.cs" />
+    <Compile Include="Logic\IRecommendationEngine.cs" />
     <Compile Include="Logic\ArtNodeConverter.cs" />
+    <Compile Include="Logic\SimilarityMeasureCalculator.cs" />
+    <Compile Include="Logic\ValuePair.cs" />
     <Compile Include="Models\ArtItem.cs" />
     <Compile Include="Models\ArtLeaf.cs" />
     <Compile Include="Models\ArtNode.cs" />

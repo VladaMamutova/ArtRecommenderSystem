@@ -11,6 +11,11 @@ namespace ArtRecommenderSystem.ViewModels
     {
         private string _interests;
 
+        // 0 - коллаборативная фильтрация, 1 - контент-ориентированная фильтрация
+        private int _algorithmIndex;
+
+        private bool _forceUpdate;
+
         public string Interests
         {
             get => _interests;
@@ -19,6 +24,30 @@ namespace ArtRecommenderSystem.ViewModels
                 _interests = value;
                 OnPropertyChanged(nameof(Interests));
             }
+        }
+
+        public int AlgorithmIndex
+        {
+            get => _algorithmIndex;
+            set
+            {
+                if (value != -1)
+                {
+                    _algorithmIndex = value;
+                    OnPropertyChanged(nameof(AlgorithmIndex));
+                    OnPropertyChanged(nameof(IsCollaborativeFilteringSelected));
+                    _forceUpdate = true;
+                    UpdateArtCards();
+                    _forceUpdate = false;
+                }
+            }
+        }
+
+        public bool IsCollaborativeFilteringSelected => _algorithmIndex == 0;
+
+        public RecommendationsViewModel()
+        {
+            AlgorithmIndex = 0;
         }
 
         public override void Like(ArtCard artCard)
@@ -72,16 +101,18 @@ namespace ArtRecommenderSystem.ViewModels
 
         public override void UpdateArtCards()
         {
-            if (IsUpToDate()) return;
+            if (IsUpToDate() && !_forceUpdate) return;
             {
                 var arts = ApplicationContext.GetInstance().Arts;
-                var collaborativeFiltering = new RecommendationEngine.CollaborativeFiltering();
-                var recommendations =
-                    collaborativeFiltering.GetRecommendations();
+                var recommendationEngine = IsCollaborativeFilteringSelected
+                    ? (IRecommendationEngine) new CollaborativeFiltering()
+                    : new ContentBasedFiltering();
+
+                var recommendations = recommendationEngine.Recommend();
                 var blackList = ApplicationContext.GetInstance().GetBlacklist();
 
                 ArtCards = new ObservableCollection<ArtCard>();
-                foreach (var id in recommendations.ArtIdList)
+                foreach (var id in recommendations)
                 {
                     var artLeaf = arts.Find(art => art.Id == id);
                     if (blackList.All(art => art.ArtId != artLeaf.Id))
@@ -90,7 +121,13 @@ namespace ArtRecommenderSystem.ViewModels
                     }
                 }
 
-                Interests = string.Join(", ", recommendations.UserInterests);
+                if (IsCollaborativeFilteringSelected)
+                {
+                    Interests =
+                        string.Join(", ",
+                            ((CollaborativeFiltering) recommendationEngine)
+                            .RetrieveLastInterests());
+                }
 
                 LastChangedTime = DateTime.Now;
             }

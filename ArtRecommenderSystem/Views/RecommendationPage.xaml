@@ -8,7 +8,7 @@
       xmlns:views="clr-namespace:ArtRecommenderSystem.Views"
       mc:Ignorable="d"
       FontSize="14"
-      d:DesignHeight="500" d:DesignWidth="800">
+      d:DesignHeight="500" d:DesignWidth="850">
     <Page.Resources>
         <ResourceDictionary>
             <utilities:DateToStringConverter x:Key="DateToStringConverter" />
@@ -82,14 +82,39 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="30 0 20 10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" FontSize="16" Text="Нравятся пользователям с интересами: " Foreground="{StaticResource MaterialDesignBodyLight}"/>
-            <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="16" Text="{Binding Interests}"/>
-        </Grid>
+        <StackPanel Grid.Row="0" >
+            <WrapPanel Margin="30 0 30 10">
+                <TextBlock Text="Механизм рекомендаций:" VerticalAlignment="Center" Margin="0 0 16 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}" SelectedIndex="{Binding AlgorithmIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionMode="Single">
+                    <ListBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.ToolTip>
+                                <TextBlock Text="Рекомендации на основе предпочтений пользователей с похожими интересами"/>
+                            </StackPanel.ToolTip>
+                            <TextBlock Text="Коллаборативная фильтрация" Margin="0 0 8 0"/>
+                            <materialDesign:PackIcon Kind="User" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.ToolTip>
+                                <TextBlock Text="Рекомендации на основе ваших предпочтений"/>
+                            </StackPanel.ToolTip>
+                            <TextBlock Text="Контент-ориентированная фильтрация" Margin="0 0 8 0"/>
+                            <materialDesign:PackIcon Kind="History" />
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </WrapPanel>
+            <Grid Margin="30 0 20 10" Visibility="{Binding IsCollaborativeFilteringSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Нравятся пользователям с интересами: " Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Interests}"/>
+            </Grid>
+        </StackPanel>
         <ScrollViewer Grid.Row="1">
             <ItemsControl ItemsSource="{Binding ArtCards}" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch">
                 <ItemsControl.ItemTemplate>

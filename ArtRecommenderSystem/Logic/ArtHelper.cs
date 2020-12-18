@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using ArtRecommenderSystem.Models;
 
 namespace ArtRecommenderSystem.Logic
 {
@@ -26,6 +28,7 @@ namespace ArtRecommenderSystem.Logic
         public const int MAX_GENRE_DIFFERENCE = 1;
         public const int MAX_MASTER_CLASSES_DIFFERENCE = 1;
         public const int MAX_POPULARITY_DIFFERENCE = 3;
+        public const int MAX_TREE_PROXIMITY = 7;
 
         static ArtHelper()
         {
@@ -101,38 +104,53 @@ namespace ArtRecommenderSystem.Logic
             return int.Parse(result);
         }
 
-        //public static double GetGenresSimilarity(Genres[] list1, Genres[] list2)
-        //{
-        //    double result = 0;
+        public static double GetGenresSimilarity(Genres[] list1, Genres[] list2)
+        {
+            double similarity = 0;
 
-        //    var genreMatrix = new double[list1.Length, list2.Length];
-        //    var commonGenres = new List<int[]>();
-        //    for (var i = 0; i < list1.Length; i++)
-        //    {
-        //        for (var j = 0; j < list2.Length; j++)
-        //        {
-        //            genreMatrix[i, j] =
-        //                GenresSimilarity[(int)list1[i], (int)list2[j]];
-        //            result += genreMatrix[i, j];
+            // Создаём и заполняем матрицу схожести жанров
+            // (строки - жанры первого списка, столбцы - второго).
+            var similarityMatrix = new double[list1.Length, list2.Length];
+            var commonGenres = new List<int[]>();
+            for (var i = 0; i < list1.Length; i++)
+            {
+                for (var j = 0; j < list2.Length; j++)
+                {
+                    similarityMatrix[i, j] =
+                        GenresSimilarity[(int) list1[i], (int) list2[j]];
+                    // Суммируем общее значение схожести.
+                    similarity += similarityMatrix[i, j];
 
-        //            if (Math.Abs(genreMatrix[i, j] - 1) < 0.01)
-        //            {
-        //                commonGenres.Add(new[] { i, j });
-        //            }
-        //        }
-        //    }
+                    // Сохраняем координаты общих жанров (схожесть = 1).
+                    if (Math.Abs(similarityMatrix[i, j] - 1) < 0.01)
+                    {
+                        commonGenres.Add(new[] { i, j });
+                    }
+                }
+            }
 
-        //    for (var i = 1; i < commonGenres.Count; i++)
-        //    {
-        //        result -= genreMatrix[commonGenres[i - 1][0],
-        //            commonGenres[i][1]];
-        //        result -= genreMatrix[commonGenres[i][0],
-        //            commonGenres[i - 1][1]];
-        //    }
+            // Дополняем до 1 те значения схожести, которые стоят
+            // на пересечении строк и столбцов общих жанров,
+            // увеличивая таким образом общую схожесть.
+            // То есть в таблице схожести должно быть
+            // (commonGenres.Count * commonGenres.Count) единиц.
+            for (var i = 0; i < commonGenres.Count; i++)
+            {
+                for (var j = 0; j < commonGenres.Count; j++)
+                {
+                    if (i != j)
+                    {
+                        similarity += 1 - similarityMatrix[commonGenres[i][0],
+                                          commonGenres[j][1]];
+                    }
+                }
+            }
+            
+            // Получаем схожесть списков жанров
+            // как среднее арифметическое всех ячеек.
+            similarity /= list1.Length * list2.Length;
 
-        //    result /= list1.Length + list2.Length - commonGenres.Count;
-
-        //    return result;
-        //}
+            return similarity;
+        }
     }
 }

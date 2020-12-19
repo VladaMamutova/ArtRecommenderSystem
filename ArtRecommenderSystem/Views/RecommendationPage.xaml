@@ -119,19 +119,19 @@
             <ItemsControl ItemsSource="{Binding ArtCards}" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:Card Width="416" Height="480" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
+                        <materialDesign:Card Width="400" Height="450" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Grid.Row="0">
-                                    <Border BorderBrush="{x:Null}" Height="60">
-                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="26"/>
+                                    <Border BorderBrush="{x:Null}" Height="54">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="24"/>
                                     </Border>
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
-                                    <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                                    <Separator Style="{StaticResource MaterialDesignSeparator}" Height="12"/>
+                                    <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" FontSize="12" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
+                                    <Separator Style="{StaticResource MaterialDesignSeparator}" Height="12"/>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
                                         <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
@@ -141,15 +141,15 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 12 0 0">
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 8 0 0">
                                             <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                            <Border CornerRadius="16" Width="32" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
+                                            <Border CornerRadius="14" Width="28" Height="28" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
                                                 <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                                             </Border>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
                                             <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                            <Border CornerRadius="16" Width="Auto" Height="32" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
+                                            <Border CornerRadius="14" Width="Auto" Height="28" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
                                                 <TextBlock Text="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Padding="10 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                                             </Border>
                                         </StackPanel>
@@ -162,7 +162,7 @@
                                     <ItemsControl ItemsSource="{Binding Genres}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <materialDesign:Chip Content="{Binding ., Converter={StaticResource GenreToStringConverter}}" Margin="0 6 6 0" Background="{StaticResource MaterialDesignChipBackground}"/>
+                                                <materialDesign:Chip Content="{Binding ., Converter={StaticResource GenreToStringConverter}}" Height="30" Margin="0 6 6 0" Background="{StaticResource MaterialDesignChipBackground}"/>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                         <ItemsControl.ItemsPanel>

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ArtRecommenderSystem.Database;
+using ArtRecommenderSystem.Logic;
 using ArtRecommenderSystem.Models;
+using ArtRecommenderSystem.Utilities;
 
 namespace ArtRecommenderSystem.ViewModels
 {
@@ -14,6 +17,9 @@ namespace ArtRecommenderSystem.ViewModels
         private int _upperMuseumNumber;
         private bool _masterClassesAreHeld;
         private bool _masterClassesAreNotHeld;
+
+        private RelayCommand _filterCommand;
+        private RelayCommand _resetFiltersCommand;
 
         public int LowerYear
         {
@@ -82,6 +88,24 @@ namespace ArtRecommenderSystem.ViewModels
 
         public List<GenreItem> GenreItems { get; }
         public List<PopularityItem> PopularityItems { get; }
+
+        public RelayCommand FilterCommand
+        {
+            get
+            {
+                return _filterCommand ??
+                       (_filterCommand = new RelayCommand(o => Filter()));
+            }
+        }
+
+        public RelayCommand ResetFiltersCommand
+        {
+            get
+            {
+                return _resetFiltersCommand ??
+                       (_resetFiltersCommand = new RelayCommand(o => ResetFilters()));
+            }
+        }
         
         public MainViewModel()
         {
@@ -185,9 +209,12 @@ namespace ArtRecommenderSystem.ViewModels
 
             foreach (var preference in preferences)
             {
-                var artCard = ArtCards.First(art => art.Id == preference.ArtId);
-                artCard.IsLiked = preference.Like == 1;
-                artCard.IsDisliked = preference.Like == 0;
+                var artCard = ArtCards.FirstOrDefault(art => art.Id == preference.ArtId);
+                if (artCard != null) // вид искусства был отфильтрован
+                {
+                    artCard.IsLiked = preference.Like == 1;
+                    artCard.IsDisliked = preference.Like == 0;
+                }
             }
 
             LastChangedTime = DateTime.Now;
@@ -206,6 +233,58 @@ namespace ArtRecommenderSystem.ViewModels
                 AreMasterClassesHeld = leaf.AreMasterClassesHeld,
                 Genres = leaf.Genres.ToArray()
             };
+        }
+
+        public void Filter()
+        {
+            var minYear = LowerYear;
+            var maxYear = UpperYear;
+            var minMuseumNumber = LowerMuseumNumber;
+            var maxMuseumNumber = UpperMuseumNumber;
+            var masterClasses = MasterClassesAreHeld;
+            var noMasterClasses = MasterClassesAreNotHeld;
+            var popularityList = PopularityItems
+                .Where(item => item.IsChecked)
+                .Select(item => item.Popularity).ToList();
+
+            var genreList = GenreItems
+                .Where(item => item.IsChecked)
+                .Select(item => item.Genre).ToList();
+
+            var filteredArts = ApplicationContext.GetInstance().Arts
+                .FilterByDate(minYear, maxYear)
+                .FilterByMuseumNumber(minMuseumNumber, maxMuseumNumber)
+                .FilterByMasterClasses(masterClasses, noMasterClasses)
+                .FilterByPopularity(popularityList)
+                .FilterByGenres(genreList);
+
+            ArtCards.Clear();
+            foreach (var art in filteredArts)
+            {
+                ArtCards.Add(BuildArtRecord(art));
+            }
+
+            UpdateArtCards();
+        }
+
+        public void ResetFilters()
+        {
+            LowerYear = MinYear;
+            UpperYear = MaxYear;
+            LowerMuseumNumber = MinMuseumNumber;
+            UpperMuseumNumber = MaxMuseumNumber;
+            MasterClassesAreHeld = MasterClassesAreNotHeld = false;
+            PopularityItems.ForEach(item => item.IsChecked = false);
+            GenreItems.ForEach(item => item.IsChecked = false);
+
+            ArtCards.Clear();
+            var arts = ApplicationContext.GetInstance().Arts;
+            foreach (var art in arts)
+            {
+                ArtCards.Add(BuildArtRecord(art));
+            }
+
+            UpdateArtCards();
         }
     }
 }

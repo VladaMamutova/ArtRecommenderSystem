@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ArtRecommenderSystem.Models;
 
 namespace ArtRecommenderSystem.Logic
@@ -117,7 +118,7 @@ namespace ArtRecommenderSystem.Logic
                 for (var j = 0; j < list2.Length; j++)
                 {
                     similarityMatrix[i, j] =
-                        GenresSimilarity[(int) list1[i], (int) list2[j]];
+                        GenresSimilarity[(int)list1[i], (int)list2[j]];
                     // Суммируем общее значение схожести.
                     similarity += similarityMatrix[i, j];
 
@@ -145,12 +146,54 @@ namespace ArtRecommenderSystem.Logic
                     }
                 }
             }
-            
+
             // Получаем схожесть списков жанров
             // как среднее арифметическое всех ячеек.
             similarity /= list1.Length * list2.Length;
 
             return similarity;
+        }
+
+        public static List<ArtLeaf> FilterByDate(
+            this List<ArtLeaf> arts, int min, int max)
+        {
+            return arts.Where(art => art.Date >= min && art.Date <= max)
+                .ToList();
+        }
+
+        public static List<ArtLeaf> FilterByMuseumNumber(
+            this List<ArtLeaf> arts, int min, int max)
+        {
+            return arts.Where(art =>
+                art.MuseumNumber >= min && art.MuseumNumber <= max).ToList();
+        }
+
+        public static List<ArtLeaf> FilterByMasterClasses(
+            this List<ArtLeaf> arts, bool areHeld, bool areNotHeld)
+        {
+            if (areHeld == areNotHeld) return arts;
+
+            return arts.Where(art =>
+                art.AreMasterClassesHeld == areHeld).ToList();
+        }
+
+        public static List<ArtLeaf> FilterByPopularity(
+            this List<ArtLeaf> arts, List<PopularityEnum> popularityList)
+        {
+            return popularityList.Count == 0
+                ? arts
+                : arts.Where(art => popularityList.Contains(art.Popularity))
+                    .ToList();
+        }
+
+        public static List<ArtLeaf> FilterByGenres(
+            this List<ArtLeaf> arts, List<Genres> genreList)
+        {
+            return genreList.Count == 0
+                ? arts
+                : arts.Where(art =>
+                        genreList.All(genre => art.Genres.Contains(genre)))
+                    .ToList();
         }
     }
 }

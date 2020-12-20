@@ -138,7 +138,7 @@
                         <TextBlock Text="Мастер-классы" FontWeight="Medium" Margin="0 0 0 8"/>
                         <StackPanel Orientation="Horizontal"  Margin="0 0 0 4">
                             <CheckBox Content="Есть" IsChecked="{Binding MasterClassesAreHeld, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 0 10 0"/>
-                            <CheckBox Content="Нет" IsChecked="{Binding MasterClassesAreHeld, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                            <CheckBox Content="Нет" IsChecked="{Binding MasterClassesAreNotHeld, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                         </StackPanel>
 
                         <Separator Style="{StaticResource MaterialDesignSeparator}"/>
@@ -183,8 +183,8 @@
                                 <ColumnDefinition Width="16"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="Сбросить все" Style="{StaticResource MaterialDesignFlatButton}"/>
-                            <Button Grid.Column="2" Content="Фильтровать"/>
+                            <Button Grid.Column="0" Content="Сбросить все" Command="{Binding ResetFiltersCommand}" Style="{StaticResource MaterialDesignFlatButton}"/>
+                            <Button Grid.Column="2" Content="Фильтровать" Command="{Binding FilterCommand}"/>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>

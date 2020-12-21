@@ -104,19 +104,41 @@
                     </TextBlock>
                 </Expander.Header>
                 <ScrollViewer Margin="8">
-                    <StackPanel Orientation="Vertical" Width="300" Margin="4 16 16 16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                    <StackPanel Orientation="Vertical" Width="350" Margin="4 16 16 16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
                         <TextBlock Text="Первое упоминание" FontWeight="Medium" Margin="0 0 0 8"/>
-                        <customControls:RangeSlider Margin="0 0 0 8"
-                                                    Minimum="-230000"
-                                                    Maximum="2020"
+                        <customControls:RangeSlider Margin="0 0 0 4"
+                                                    Minimum="{Binding MinYear, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
+                                                    Maximum="{Binding MaxYear, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
                                                     LowerValue="{Binding LowerYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                     UpperValue="{Binding UpperYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
                             <TextBlock Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
                             <TextBox Text="{Binding LowerYear, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource DateToStringConverter}}" Width="110" IsReadOnly="True"/>
                             <TextBlock Text="до" Margin="20 0 10 0" VerticalAlignment="Center"/>
                             <TextBox Text="{Binding UpperYear, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource DateToStringConverter}}" Width="110" IsReadOnly="True"/>
                         </StackPanel>
+
+                        <customControls:RangeSlider Margin="0 0 0 8"
+                                                    Minimum="{Binding MinPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
+                                                    Maximum="{Binding MaxPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
+                                                    LowerValue="{Binding LowerPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    UpperValue="{Binding UpperPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <Grid Margin="0 0 0 4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Text="{Binding LowerPeriod, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True"/>
+                        </Grid>
+                        <Grid Margin="0 0 0 4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="до" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Text="{Binding UpperPeriod, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True"/>
+                        </Grid>
 
                         <Separator Style="{StaticResource MaterialDesignSeparator}" />
 

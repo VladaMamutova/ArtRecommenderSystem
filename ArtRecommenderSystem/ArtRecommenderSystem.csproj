@@ -100,8 +100,10 @@
     <Compile Include="Logic\ArtHelper.cs" />
     <Compile Include="Logic\CollaborativeFiltering.cs" />
     <Compile Include="Logic\ContentBasedFiltering.cs" />
+    <Compile Include="Logic\FilterEngine.cs" />
     <Compile Include="Logic\IRecommendationEngine.cs" />
     <Compile Include="Logic\ArtNodeConverter.cs" />
+    <Compile Include="Logic\Period.cs" />
     <Compile Include="Logic\SimilarityMeasureCalculator.cs" />
     <Compile Include="Logic\ValuePair.cs" />
     <Compile Include="Models\ArtItem.cs" />

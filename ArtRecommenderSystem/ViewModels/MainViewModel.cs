@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using ArtRecommenderSystem.Database;
 using ArtRecommenderSystem.Logic;
@@ -11,6 +10,8 @@ namespace ArtRecommenderSystem.ViewModels
 {
     class MainViewModel : ArtCardsViewModel
     {
+        private int _lowerPeriodNumber;
+        private int _upperPeriodNumber;
         private int _lowerYear;
         private int _upperYear;
         private int _lowerMuseumNumber;
@@ -20,6 +21,46 @@ namespace ArtRecommenderSystem.ViewModels
 
         private RelayCommand _filterCommand;
         private RelayCommand _resetFiltersCommand;
+
+        public string LowerPeriod
+        {
+            get
+            {
+                var period = ArtHelper.Periods[_lowerPeriodNumber - 1];
+                return $"{period.Start.ConvertDateToString()} ({period.Name})";
+            }
+        }
+
+        public string UpperPeriod
+        {
+            get
+            {
+                var period = ArtHelper.Periods[_upperPeriodNumber - 1];
+                return $"{period.End.ConvertDateToString()} ({period.Name})";
+            }
+        }
+
+        public int LowerPeriodNumber
+        {
+            get => _lowerPeriodNumber;
+            set
+            {
+                _lowerPeriodNumber = value;
+                OnPropertyChanged(nameof(LowerPeriodNumber));
+                OnPropertyChanged(nameof(LowerPeriod));
+            }
+        }
+
+        public int UpperPeriodNumber
+        {
+            get => _upperPeriodNumber;
+            set
+            {
+                _upperPeriodNumber = value;
+                OnPropertyChanged(nameof(UpperPeriodNumber));
+                OnPropertyChanged(nameof(UpperPeriod));
+            }
+        }
 
         public int LowerYear
         {
@@ -81,6 +122,8 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
+        public int MinPeriodNumber => 1;
+        public int MaxPeriodNumber => ArtHelper.Periods.Length;
         public int MinYear { get; }
         public int MaxYear { get; }
         public int MinMuseumNumber { get; }
@@ -116,8 +159,10 @@ namespace ArtRecommenderSystem.ViewModels
             {
                 ArtCards.Add(artCard);
             }
-            
-            LowerYear = MinYear = -230000;
+
+            LowerPeriodNumber = MinPeriodNumber;
+            UpperPeriodNumber = MaxPeriodNumber;
+            LowerYear = MinYear = ArtHelper.Periods[0].Start;
             UpperYear = MaxYear = DateTime.Now.Year;
             LowerMuseumNumber = MinMuseumNumber = 0;
             UpperMuseumNumber = MaxMuseumNumber = 10;
@@ -237,29 +282,26 @@ namespace ArtRecommenderSystem.ViewModels
 
         public void Filter()
         {
-            var minYear = LowerYear;
-            var maxYear = UpperYear;
-            var minMuseumNumber = LowerMuseumNumber;
-            var maxMuseumNumber = UpperMuseumNumber;
-            var masterClasses = MasterClassesAreHeld;
-            var noMasterClasses = MasterClassesAreNotHeld;
-            var popularityList = PopularityItems
-                .Where(item => item.IsChecked)
-                .Select(item => item.Popularity).ToList();
+            var settings = new FilterEngine.FilterSettings
+            {
+                MinYear = LowerYear,
+                MaxYear = UpperYear,
+                MinMuseumNumber = LowerMuseumNumber,
+                MaxMuseumNumber = UpperMuseumNumber,
+                MasterClassesAreHeld = MasterClassesAreHeld,
+                MasterClassesAreNotHeld = MasterClassesAreNotHeld,
+                PopularityList = PopularityItems
+                    .Where(item => item.IsChecked)
+                    .Select(item => item.Popularity).ToList(),
+                GenreList = GenreItems
+                    .Where(item => item.IsChecked)
+                    .Select(item => item.Genre).ToList()
+            };
 
-            var genreList = GenreItems
-                .Where(item => item.IsChecked)
-                .Select(item => item.Genre).ToList();
-
-            var filteredArts = ApplicationContext.GetInstance().Arts
-                .FilterByDate(minYear, maxYear)
-                .FilterByMuseumNumber(minMuseumNumber, maxMuseumNumber)
-                .FilterByMasterClasses(masterClasses, noMasterClasses)
-                .FilterByPopularity(popularityList)
-                .FilterByGenres(genreList);
+            var filterResult = FilterEngine.Filter(settings);
 
             ArtCards.Clear();
-            foreach (var art in filteredArts)
+            foreach (var art in filterResult.Arts)
             {
                 ArtCards.Add(BuildArtRecord(art));
             }

@@ -1,27 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ArtRecommenderSystem.Database;
 using ArtRecommenderSystem.Models;
+using ArtRecommenderSystem.ViewModels;
 
 namespace ArtRecommenderSystem.Logic
 {
     public static class ArtHelper
     {
-        private class Period
-        {
-            public string Name { get; }
-            public int Start { get; }
-            public int End { get; }
-
-            public Period(string name, int start, int end)
-            {
-                Name = name;
-                Start = start;
-                End = end;
-            }
-        }
-
-        private static readonly Period[] Periods;
+        public static readonly Period[] Periods;
         private static readonly double[,] GenresSimilarity;
 
         public const int MAX_PERIOD_DIFFERENCE = 6;
@@ -35,13 +23,13 @@ namespace ArtRecommenderSystem.Logic
         {
             Periods = new[]
             {
-                new Period("Первобытность", -250000000, -5001),
-                new Period("Древний мир", -5000, -801),
+                new Period("Первобытность", -2000000, -4001),
+                new Period("Древний мир", -4000, -801),
                 new Period("Античность", -800, 450),
                 new Period("Средневековье", 451, 1449),
                 new Period("Ренессанс", 1450, 1599),
                 new Period("Новое время", 1600, 1899),
-                new Period("Новейшее время", 1900, int.MaxValue)
+                new Period("Новейшее время", 1900, DateTime.Now.Year)
             };
 
             GenresSimilarity = new[,]
@@ -67,7 +55,7 @@ namespace ArtRecommenderSystem.Logic
             var period = -1;
             for (var i = 0; i < Periods.Length && period == -1; i++)
             {
-                if (date < Periods[i].End)
+                if (date <= Periods[i].End)
                 {
                     period = i + 1;
                 }
@@ -118,14 +106,14 @@ namespace ArtRecommenderSystem.Logic
                 for (var j = 0; j < list2.Length; j++)
                 {
                     similarityMatrix[i, j] =
-                        GenresSimilarity[(int)list1[i], (int)list2[j]];
+                        GenresSimilarity[(int) list1[i], (int) list2[j]];
                     // Суммируем общее значение схожести.
                     similarity += similarityMatrix[i, j];
 
                     // Сохраняем координаты общих жанров (схожесть = 1).
                     if (Math.Abs(similarityMatrix[i, j] - 1) < 0.01)
                     {
-                        commonGenres.Add(new[] { i, j });
+                        commonGenres.Add(new[] {i, j});
                     }
                 }
             }
@@ -152,48 +140,6 @@ namespace ArtRecommenderSystem.Logic
             similarity /= list1.Length * list2.Length;
 
             return similarity;
-        }
-
-        public static List<ArtLeaf> FilterByDate(
-            this List<ArtLeaf> arts, int min, int max)
-        {
-            return arts.Where(art => art.Date >= min && art.Date <= max)
-                .ToList();
-        }
-
-        public static List<ArtLeaf> FilterByMuseumNumber(
-            this List<ArtLeaf> arts, int min, int max)
-        {
-            return arts.Where(art =>
-                art.MuseumNumber >= min && art.MuseumNumber <= max).ToList();
-        }
-
-        public static List<ArtLeaf> FilterByMasterClasses(
-            this List<ArtLeaf> arts, bool areHeld, bool areNotHeld)
-        {
-            if (areHeld == areNotHeld) return arts;
-
-            return arts.Where(art =>
-                art.AreMasterClassesHeld == areHeld).ToList();
-        }
-
-        public static List<ArtLeaf> FilterByPopularity(
-            this List<ArtLeaf> arts, List<PopularityEnum> popularityList)
-        {
-            return popularityList.Count == 0
-                ? arts
-                : arts.Where(art => popularityList.Contains(art.Popularity))
-                    .ToList();
-        }
-
-        public static List<ArtLeaf> FilterByGenres(
-            this List<ArtLeaf> arts, List<Genres> genreList)
-        {
-            return genreList.Count == 0
-                ? arts
-                : arts.Where(art =>
-                        genreList.All(genre => art.Genres.Contains(genre)))
-                    .ToList();
         }
     }
 }

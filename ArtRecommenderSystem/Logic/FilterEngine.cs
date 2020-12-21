@@ -151,7 +151,9 @@ namespace ArtRecommenderSystem.Logic
             for (var i = 0; i < frequencyDesc.Count - 1; i++)
             {
                 var filter = frequencyDesc[i];
-                var filterIterationNumber = filters[filter.Key].IterationNumber;
+                var filterIterationNumber = filters
+                    .Find(f => f.FilterId == filter.Key)
+                    .IterationNumber;
                 int currentIteration = 0;
                 for (var j = filter.Value;
                     j < iterations.Length &&
@@ -222,8 +224,8 @@ namespace ArtRecommenderSystem.Logic
                 {
                     if (iterationId[iterationCount] == dateFilterId)
                     {
-                        settings.MinYear = ExpandMinYear(minYear);
-                        settings.MaxYear = ExpandMaxYear(maxYear);
+                        minYear = ExpandMinYear(minYear);
+                        maxYear = ExpandMaxYear(maxYear);
                     }
                     else if (iterationId[iterationCount] == museumFilterId)
                     {
@@ -242,7 +244,7 @@ namespace ArtRecommenderSystem.Logic
                     .FilterByGenres(settings.GenreList);
 
             } while (filteredArts.Count == 0 &&
-                     iterationCount < iterationId.Length);
+                     iterationCount + 1 < iterationId.Length);
 
             settings.MinYear = minYear;
             settings.MaxYear = maxYear;

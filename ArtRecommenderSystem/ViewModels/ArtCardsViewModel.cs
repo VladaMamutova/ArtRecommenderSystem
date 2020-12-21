@@ -8,6 +8,7 @@ namespace ArtRecommenderSystem.ViewModels
     public abstract class ArtCardsViewModel: ViewModelBase, IArtCardsViewModel
     {
         private ObservableCollection<ArtCard> _artCards;
+        private string _emptyMessage;
         private RelayCommand _likeCommand;
         private RelayCommand _dislikeCommand;
 
@@ -20,6 +21,16 @@ namespace ArtRecommenderSystem.ViewModels
             {
                 _artCards = value;
                 OnPropertyChanged(nameof(ArtCards));
+            }
+        }
+
+        public string EmptyMessage
+        {
+            get => _emptyMessage;
+            set
+            {
+                _emptyMessage = value;
+                OnPropertyChanged(nameof(EmptyMessage));
             }
         }
 
@@ -50,8 +61,9 @@ namespace ArtRecommenderSystem.ViewModels
         protected ArtCardsViewModel()
         {
             LastChangedTime = DateTime.MinValue;
-            ArtCards = new ObservableCollection<ArtCard>();
             MessageQueue = new SnackbarMessageQueue(TimeSpan.FromMilliseconds(2500));
+            ArtCards = new ObservableCollection<ArtCard>();
+            EmptyMessage = "Список видов искусств пуст";
         }
 
         public abstract void Like(ArtCard artCard);

@@ -160,6 +160,10 @@ namespace ArtRecommenderSystem.ViewModels
                 ArtCards.Add(artCard);
             }
 
+            EmptyMessage = "По вашему запросу ничего не найдено. " +
+                           "Попробуйте снять ограничения в фильтре " +
+                           "мастер-классов, популярности или жанров";
+
             LowerPeriodNumber = MinPeriodNumber;
             UpperPeriodNumber = MaxPeriodNumber;
             LowerYear = MinYear = ArtHelper.Periods[0].Start;

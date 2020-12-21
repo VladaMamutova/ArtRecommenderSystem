@@ -7,6 +7,12 @@ namespace ArtRecommenderSystem.ViewModels
 {
     class BlacklistViewModel : ArtCardsViewModel
     {
+        public BlacklistViewModel()
+        {
+            EmptyMessage = "Нажмите \"Не рекомендовать\", чтобы добавить " +
+                           "вид искусства в \"Чёрный список\"";
+        }
+
         public override void Like(ArtCard artCard)
         {
             if (artCard.IsLiked)

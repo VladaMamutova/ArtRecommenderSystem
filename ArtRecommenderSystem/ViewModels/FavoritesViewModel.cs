@@ -7,6 +7,12 @@ namespace ArtRecommenderSystem.ViewModels
 {
     class FavoritesViewModel : ArtCardsViewModel
     {
+        public FavoritesViewModel()
+        {
+            EmptyMessage = "Нажмите \"Нравится\", чтобы добавить " +
+                           "вид искусства в \"Избранное\"";
+        }
+
         public override void Like(ArtCard artCard)
         {
             if (artCard.IsLiked)

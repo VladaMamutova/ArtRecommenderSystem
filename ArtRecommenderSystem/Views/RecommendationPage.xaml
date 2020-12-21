@@ -106,7 +106,17 @@
                     </ListBoxItem>
                 </ListBox>
             </WrapPanel>
-            <Grid Margin="30 0 20 10" Visibility="{Binding IsCollaborativeFilteringSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Margin="30 0 20 10">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Interests.Length}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -200,6 +210,20 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
+
+        <TextBlock Grid.Row="1" Text="{Binding EmptyMessage, Mode=OneTime}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource MaterialDesignBodyLight}">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=ArtCards.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
         <materialDesign:Snackbar Grid.Row="1" HorizontalAlignment="Stretch" MessageQueue="{Binding MessageQueue}"/>
     </Grid>
 </views:ArtCardsPage>

@@ -35,7 +35,7 @@ namespace ArtRecommenderSystem.ViewModels
                 {
                     _algorithmIndex = value;
                     OnPropertyChanged(nameof(AlgorithmIndex));
-                    OnPropertyChanged(nameof(IsCollaborativeFilteringSelected));
+
                     _forceUpdate = true;
                     UpdateArtCards();
                     _forceUpdate = false;
@@ -48,6 +48,8 @@ namespace ArtRecommenderSystem.ViewModels
         public RecommendationsViewModel()
         {
             AlgorithmIndex = 0;
+            EmptyMessage = "Добавьте хотя бы один вид искусства в \"Избранное\", " +
+                           "чтобы получить рекомендации";
         }
 
         public override void Like(ArtCard artCard)
@@ -127,6 +129,10 @@ namespace ArtRecommenderSystem.ViewModels
                         string.Join(", ",
                             ((CollaborativeFiltering) recommendationEngine)
                             .RetrieveLastInterests());
+                }
+                else
+                {
+                    Interests = "";
                 }
 
                 LastChangedTime = DateTime.Now;

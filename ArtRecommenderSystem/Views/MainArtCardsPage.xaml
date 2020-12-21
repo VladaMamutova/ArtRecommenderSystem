@@ -302,6 +302,20 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
+
+        <TextBlock Grid.Column="1" Text="{Binding EmptyMessage, Mode=OneTime}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource MaterialDesignBodyLight}">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=ArtCards.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
         <materialDesign:Snackbar Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" MessageQueue="{Binding MessageQueue}"/>
     </Grid>
 </views:ArtCardsPage>

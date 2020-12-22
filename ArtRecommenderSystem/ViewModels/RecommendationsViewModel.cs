@@ -123,17 +123,11 @@ namespace ArtRecommenderSystem.ViewModels
                     }
                 }
 
-                if (IsCollaborativeFilteringSelected)
-                {
-                    Interests =
-                        string.Join(", ",
-                            ((CollaborativeFiltering) recommendationEngine)
-                            .RetrieveLastInterests());
-                }
-                else
-                {
-                    Interests = "";
-                }
+                Interests = IsCollaborativeFilteringSelected
+                    ? string.Join(", ",
+                        ((CollaborativeFiltering) recommendationEngine)
+                        .RetrieveLastInterests())
+                    : "";
 
                 LastChangedTime = DateTime.Now;
             }

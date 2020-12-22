@@ -8,7 +8,7 @@
         Title="Art Recommender System"
         Background="{DynamicResource MaterialDesignPaper}"
         FontSize="14"
-        Width="980" Height="640" MinWidth="850" MinHeight="550"
+        Width="960" Height="640" MinWidth="960" MinHeight="550"
         WindowStyle="None" BorderThickness="2"
         BorderBrush="{StaticResource PrimaryHueMidBrush}"
         ResizeMode="CanResizeWithGrip"

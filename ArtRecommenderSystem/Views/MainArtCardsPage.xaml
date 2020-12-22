@@ -103,113 +103,127 @@
                         </TextBlock.LayoutTransform>
                     </TextBlock>
                 </Expander.Header>
-                <ScrollViewer Margin="8">
-                    <StackPanel Orientation="Vertical" Width="350" Margin="4 16 16 16" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-                        <TextBlock Text="Первое упоминание" FontWeight="Medium" Margin="0 0 0 8"/>
-                        <customControls:RangeSlider Margin="0 0 0 4"
-                                                    Minimum="{Binding MinYear, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
-                                                    Maximum="{Binding MaxYear, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
-                                                    LowerValue="{Binding LowerYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                    UpperValue="{Binding UpperYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
-                            <TextBlock Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding LowerYear, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource DateToStringConverter}}" Width="110" IsReadOnly="True"/>
-                            <TextBlock Text="до" Margin="20 0 10 0" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding UpperYear, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource DateToStringConverter}}" Width="110" IsReadOnly="True"/>
-                        </StackPanel>
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                        <customControls:RangeSlider Margin="0 0 0 8"
-                                                    Minimum="{Binding MinPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
-                                                    Maximum="{Binding MaxPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
-                                                    LowerValue="{Binding LowerPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                    UpperValue="{Binding UpperPeriodNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <Grid Margin="0 0 0 4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="1" Text="{Binding LowerPeriod, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True"/>
-                        </Grid>
-                        <Grid Margin="0 0 0 4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="до" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="1" Text="{Binding UpperPeriod, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True"/>
-                        </Grid>
+                    <Grid Grid.Row="0" Margin="16 8 32 8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Сбросить все" Command="{Binding ResetFiltersCommand}" Style="{StaticResource MaterialDesignFlatButton}"/>
+                        <Button Grid.Column="2" Content="Фильтровать" Command="{Binding FilterCommand}"/>
+                    </Grid>
 
-                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                    <Separator Grid.Row="1" Style="{StaticResource MaterialDesignSeparator}" />
 
-                        <TextBlock Text="Количество музеев" FontWeight="Medium" Margin="0 0 0 8"/>
-                        <customControls:RangeSlider Margin="0 0 0 8"
+                    <ScrollViewer Grid.Row="2">
+                        <StackPanel Orientation="Vertical" Width="360" Margin="0 0 16 0" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+                            <TextBlock Text="Первое упоминание" FontWeight="Medium"/>
+                            <StackPanel Orientation="Horizontal" Margin="0 8 0 12">
+                                <TextBlock Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding LowerYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="70" Height="28" VerticalAlignment="Bottom"/>
+                                <ComboBox Margin="10 0 0 0" SelectedIndex="{Binding LowerEra, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <ComboBoxItem Content="до н. э."/>
+                                    <ComboBoxItem Content="н. э."/>
+                                </ComboBox>
+                                <TextBlock Text="до" Margin="20 0 10 0" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding UpperYear, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="70" Height="28" VerticalAlignment="Bottom"/>
+                                <ComboBox Margin="10 0 0 0" SelectedIndex="{Binding UpperEra, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    <ComboBoxItem Content="до н. э."/>
+                                    <ComboBoxItem Content="н. э." />
+                                </ComboBox>
+                            </StackPanel>
+
+                            <customControls:RangeSlider Margin="0 0 0 8"
+                                                    Minimum="{Binding MinPeriod, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
+                                                    Maximum="{Binding MaxPeriod, UpdateSourceTrigger=PropertyChanged, Mode=OneTime}"
+                                                    LowerValue="{Binding LowerPeriod, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    UpperValue="{Binding UpperPeriod, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                            <Grid Margin="0 0 0 4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="от " VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding LowerDateText, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                            </Grid>
+                            <Grid Margin="0 0 0 4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="до " VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding UpperDateText, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                            </Grid>
+
+                            <Separator Style="{StaticResource MaterialDesignSeparator}" />
+
+                            <TextBlock Text="Количество музеев" FontWeight="Medium" Margin="0 0 0 8"/>
+                            <customControls:RangeSlider Margin="0 0 0 8"
                                                     Minimum="0"
                                                     Maximum="10"
                                                     LowerValue="{Binding LowerMuseumNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                     UpperValue="{Binding UpperMuseumNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
-                            <TextBlock Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding LowerMuseumNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="110" IsReadOnly="True"/>
-                            <TextBlock Text="до" Margin="20 0 10 0" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding UpperMuseumNumber, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="110" IsReadOnly="True"/>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="от" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding LowerMuseumNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="110"/>
+                                <TextBlock Text="до" Margin="20 0 10 0" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding UpperMuseumNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="110"/>
+                            </StackPanel>
 
-                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                            <Separator Margin="0 8 0 0" Style="{StaticResource MaterialDesignSeparator}" />
 
-                        <TextBlock Text="Мастер-классы" FontWeight="Medium" Margin="0 0 0 8"/>
-                        <StackPanel Orientation="Horizontal"  Margin="0 0 0 4">
-                            <CheckBox Content="Есть" IsChecked="{Binding MasterClassesAreHeld, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 0 10 0"/>
-                            <CheckBox Content="Нет" IsChecked="{Binding MasterClassesAreNotHeld, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
-                        </StackPanel>
+                            <TextBlock Text="Мастер-классы" FontWeight="Medium"/>
+                            <StackPanel Orientation="Horizontal"  Margin="0 8 0 0">
+                                <CheckBox Content="Есть" IsChecked="{Binding MasterClassesAreHeld, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0 0 10 0"/>
+                                <CheckBox Content="Нет" IsChecked="{Binding MasterClassesAreNotHeld, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                            </StackPanel>
 
-                        <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+                            <Separator Margin="0 4 0 0" Style="{StaticResource MaterialDesignSeparator}"/>
 
-                        <TextBlock Text="Популярность" FontWeight="Medium" Margin="0 0 0 8"/>
-                        <ItemsControl ItemsSource="{Binding PopularityItems}" Margin="0 0 0 2">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            <TextBlock Text="Популярность" FontWeight="Medium"/>
+                            <ItemsControl ItemsSource="{Binding PopularityItems}" Margin="0 8 0 2">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Width="180" IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               Content="{Binding Popularity, Converter={StaticResource PopularityToStringConverter}}" Margin="0 0 0 2"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
 
-                        <Separator Style="{StaticResource MaterialDesignSeparator}" />
+                            <Separator Style="{StaticResource MaterialDesignSeparator}" />
 
-                        <TextBlock Text="Жанры" FontWeight="Medium" Margin="0 0 0 8"/>
-                        <ItemsControl ItemsSource="{Binding GenreItems}" Margin="0 0 0 2">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Width="140" IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            <TextBlock Text="Жанры" FontWeight="Medium"/>
+                            <ItemsControl ItemsSource="{Binding GenreItems}" Margin="0 8 0 2">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Width="180" IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               Content="{Binding Genre, Converter={StaticResource GenreToStringConverter}}" Margin="0 0 0 2"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
 
-                        <Separator Style="{StaticResource MaterialDesignSeparator}"/>
-
-                        <Grid Margin="0 8 0 0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="Сбросить все" Command="{Binding ResetFiltersCommand}" Style="{StaticResource MaterialDesignFlatButton}"/>
-                            <Button Grid.Column="2" Content="Фильтровать" Command="{Binding FilterCommand}"/>
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </Expander>
             <Border
             Background="{DynamicResource MaterialDesignDivider}"
@@ -217,105 +231,129 @@
             VerticalAlignment="Stretch"
             SnapsToDevicePixels="True" />
         </StackPanel>
-        <ScrollViewer Grid.Column="1">
-            <ItemsControl ItemsSource="{Binding ArtCards}" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <materialDesign:Card Width="400" Height="450" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0">
-                                    <Border BorderBrush="{x:Null}" Height="54">
-                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="24"/>
-                                    </Border>
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" Height="12"/>
-                                    <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" FontSize="12" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" Height="12"/>
-                                    <StackPanel Orientation="Horizontal" >
-                                        <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                        <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
-                                    </StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 8 0 0">
-                                            <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                            <Border CornerRadius="14" Width="28" Height="28" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
-                                                <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                                            </Border>
+        <Grid Grid.Column="1" Margin="10 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="64 8 64 8">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=FilterMessage.Length}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Margin="0 0 10 0" TextAlignment="Center" HorizontalAlignment="Center" Text="По вашему запросу ничего не найдено, но мы подобрали кое-что, что вам может понравиться" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <materialDesign:PackIcon Grid.Column="1" Kind="InfoCircleOutline" Cursor="Hand"  Width="28" Height="28" Foreground="{StaticResource MaterialDesignToolBackground}" Background="Transparent" VerticalAlignment="Center"
+                                         ToolTip="{Binding FilterMessage, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            </Grid>
+            <ScrollViewer Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding ArtCards}" Margin="10" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Card Width="400" Height="450" Padding="16" Margin="8" Background="{DynamicResource MaterialDesignCardBackground}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0">
+                                        <Border BorderBrush="{x:Null}" Height="54">
+                                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource MaterialDesignHeadline6TextBlock}" TextWrapping="Wrap" FontSize="24"/>
+                                        </Border>
+                                        <Separator Style="{StaticResource MaterialDesignSeparator}" Height="12"/>
+                                        <TextBlock Text="{Binding Path = Parents, Converter={StaticResource StringArrayToStringConverter}}" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignTextBlock}" FontSize="12" Foreground="{StaticResource MaterialDesignLightForeground}" Padding="0 0 0 0"/>
+                                        <Separator Style="{StaticResource MaterialDesignSeparator}" Height="12"/>
+                                        <StackPanel Orientation="Horizontal" >
+                                            <TextBlock Text="Первое упоминание:" Margin="0 0 10 0" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                            <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToStringConverter}}"/>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
-                                            <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                            <Border CornerRadius="14" Width="Auto" Height="28" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
-                                                <TextBlock Text="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Padding="10 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                                            </Border>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0 8 0 0">
+                                                <TextBlock Text="Количество музеев:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                                <Border CornerRadius="14" Width="28" Height="28" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
+                                                    <TextBlock Text="{Binding MuseumNumber}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 8 0 0">
+                                                <TextBlock Text="Мастер-классы:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                                <Border CornerRadius="14" Width="Auto" Height="28" Cursor="Hand" Background="{StaticResource MaterialDesignChipBackground}">
+                                                    <TextBlock Text="{Binding AreMasterClassesHeld, Converter={StaticResource BooleanToStringConverter}}" Padding="10 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Cursor="Hand">
+                                            <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                            <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity, Converter={StaticResource EnumConverter}}" IsReadOnly="True" ToolTip="{Binding Popularity, Converter={StaticResource PopularityToStringConverter}}" Foreground="{StaticResource AttentionToActionBrush}"/>
                                         </StackPanel>
-                                    </Grid>
-                                    <StackPanel Orientation="Horizontal" Margin="0 8 0 0" Cursor="Hand">
-                                        <TextBlock Text="Популярность:" Margin="0 0 10 0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                        <materialDesign:RatingBar Min="0" Max="3" Value="{Binding Popularity, Converter={StaticResource EnumConverter}}" IsReadOnly="True" ToolTip="{Binding Popularity, Converter={StaticResource PopularityToStringConverter}}" Foreground="{StaticResource AttentionToActionBrush}"/>
+                                        <TextBlock Text="Жанры:" Margin="0 8 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
+                                        <ItemsControl ItemsSource="{Binding Genres}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <materialDesign:Chip Content="{Binding ., Converter={StaticResource GenreToStringConverter}}" Height="30" Margin="0 6 6 0" Background="{StaticResource MaterialDesignChipBackground}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
                                     </StackPanel>
-                                    <TextBlock Text="Жанры:" Margin="0 8 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBodyLight}"/>
-                                    <ItemsControl ItemsSource="{Binding Genres}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <materialDesign:Chip Content="{Binding ., Converter={StaticResource GenreToStringConverter}}" Height="30" Margin="0 6 6 0" Background="{StaticResource MaterialDesignChipBackground}"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </StackPanel>
-                                <Grid Grid.Row="1">
-                                    <Separator Style="{StaticResource MaterialDesignSeparator}" VerticalAlignment="Top"/>
-                                    <Grid Margin="0 20 0 0">
-                                        <ToggleButton Style="{StaticResource LikeButton}"
+                                    <Grid Grid.Row="1">
+                                        <Separator Style="{StaticResource MaterialDesignSeparator}" VerticalAlignment="Top"/>
+                                        <Grid Margin="0 20 0 0">
+                                            <ToggleButton Style="{StaticResource LikeButton}"
                                                       ContentStringFormat="Нравится"
                                                       HorizontalAlignment="Left"
                                                       IsChecked="{Binding IsLiked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                       Command="{Binding DataContext.LikeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                       CommandParameter="{Binding}"/>
-                                        <ToggleButton Style="{StaticResource DislikeButton}"
+                                            <ToggleButton Style="{StaticResource DislikeButton}"
                                                       ContentStringFormat="Не рекомендовать"
                                                       HorizontalAlignment="Right"
                                                       IsChecked="{Binding IsDisliked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                       Command="{Binding DataContext.DislikeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                       CommandParameter="{Binding}"/>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
 
-        <TextBlock Grid.Column="1" Text="{Binding EmptyMessage, Mode=OneTime}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource MaterialDesignBodyLight}">
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=ArtCards.Count}" Value="0">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-
+            <TextBlock Grid.Row="1" Text="{Binding EmptyMessage, Mode=OneTime}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource MaterialDesignBodyLight}">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=ArtCards.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
         <materialDesign:Snackbar Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" MessageQueue="{Binding MessageQueue}"/>
     </Grid>
 </views:ArtCardsPage>

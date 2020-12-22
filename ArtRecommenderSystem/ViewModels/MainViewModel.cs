@@ -10,75 +10,153 @@ namespace ArtRecommenderSystem.ViewModels
 {
     class MainViewModel : ArtCardsViewModel
     {
-        private int _lowerPeriodNumber;
-        private int _upperPeriodNumber;
+        private int _lowerPeriod;
+        private int _upperPeriod;
         private int _lowerYear;
         private int _upperYear;
+        private int _lowerEra; // 0 - до н. э., 1 - н. э.
+        private int _upperEra; // 0 - до н. э., 1 - н. э.
         private int _lowerMuseumNumber;
         private int _upperMuseumNumber;
         private bool _masterClassesAreHeld;
         private bool _masterClassesAreNotHeld;
+        private string _filterMessage;
 
         private RelayCommand _filterCommand;
         private RelayCommand _resetFiltersCommand;
 
-        public string LowerPeriod
+        public int LowerPeriod
         {
-            get
-            {
-                var period = ArtHelper.Periods[_lowerPeriodNumber - 1];
-                return $"{period.Start.ConvertDateToString()} ({period.Name})";
-            }
-        }
-
-        public string UpperPeriod
-        {
-            get
-            {
-                var period = ArtHelper.Periods[_upperPeriodNumber - 1];
-                return $"{period.End.ConvertDateToString()} ({period.Name})";
-            }
-        }
-
-        public int LowerPeriodNumber
-        {
-            get => _lowerPeriodNumber;
+            get => _lowerPeriod;
             set
             {
-                _lowerPeriodNumber = value;
-                OnPropertyChanged(nameof(LowerPeriodNumber));
+                _lowerPeriod = value;
+                _lowerYear = ArtHelper.Periods[_lowerPeriod - 1].Start;
+                LowerEra = _lowerYear < 0 ? 0 : 1;
+
                 OnPropertyChanged(nameof(LowerPeriod));
+                OnPropertyChanged(nameof(LowerYear));
+                OnPropertyChanged(nameof(LowerEra));
+                OnPropertyChanged(nameof(LowerDateText));
             }
         }
 
-        public int UpperPeriodNumber
+        public int UpperPeriod
         {
-            get => _upperPeriodNumber;
+            get => _upperPeriod;
             set
             {
-                _upperPeriodNumber = value;
-                OnPropertyChanged(nameof(UpperPeriodNumber));
+                _upperPeriod = value;
+                _upperYear = ArtHelper.Periods[_upperPeriod - 1].End;
+                UpperEra = _upperYear < 0 ? 0 : 1;
+
                 OnPropertyChanged(nameof(UpperPeriod));
+                OnPropertyChanged(nameof(UpperYear));
+                OnPropertyChanged(nameof(UpperDateText));
             }
         }
 
         public int LowerYear
         {
-            get => _lowerYear;
+            get => _lowerEra == 0 ? _lowerYear * -1 : _lowerYear;
             set
             {
-                _lowerYear = value;
-                OnPropertyChanged(nameof(LowerYear));
+                var newYear = value * (_lowerEra == 0 ? -1 : 1);
+                if (newYear >= MinYear && newYear <= MaxYear)
+                {
+                    _lowerYear = newYear;
+                    _lowerPeriod = ArtHelper.GetPeriodNumber(_lowerYear);
+
+                    OnPropertyChanged(nameof(LowerYear));
+                    OnPropertyChanged(nameof(LowerPeriod));
+                    OnPropertyChanged(nameof(LowerDateText));
+                }
             }
         }
 
         public int UpperYear
         {
-            get => _upperYear;
+            get => _upperEra == 0 ? _upperYear * -1 : _upperYear;
             set
             {
-                _upperYear = value;
+                var newYear = value * (_upperEra == 0 ? -1 : 1);
+                if (newYear >= MinYear && newYear <= MaxYear)
+                {
+                    _upperYear = newYear;
+                    _upperPeriod = ArtHelper.GetPeriodNumber(_upperYear);
+
+                    OnPropertyChanged(nameof(UpperYear));
+                    OnPropertyChanged(nameof(UpperPeriod));
+                    OnPropertyChanged(nameof(UpperDateText));
+                }
+            }
+        }
+
+        public int LowerEra
+        {
+            get => _lowerEra;
+            set
+            {
+                _lowerEra = value;
+                if (_lowerEra == 0 && _lowerYear >= 0 ||
+                    _lowerEra == 1 && _lowerYear < 0)
+                {
+                    _lowerYear *= -1;
+                }
+
+                if (_lowerYear < MinYear)
+                {
+                    _lowerYear = MinYear;
+                    _lowerPeriod = MinPeriod;
+                }
+                else if (_lowerYear > MaxYear)
+                {
+                    _lowerYear = MaxYear;
+                    _lowerPeriod = MaxPeriod;
+                }
+                else
+                {
+                    _lowerPeriod = ArtHelper.GetPeriodNumber(_lowerYear);
+                }
+
+                OnPropertyChanged(nameof(LowerEra));
+                OnPropertyChanged(nameof(LowerYear));
+                OnPropertyChanged(nameof(LowerPeriod));
+                OnPropertyChanged(nameof(LowerDateText));
+            }
+        }
+
+        public int UpperEra
+        {
+            get => _upperEra;
+            set
+            {
+                _upperEra = value;
+                if (_upperEra == 0 && _upperYear >= 0 ||
+                    _upperEra == 1 && _upperYear < 0)
+                {
+                    _upperYear *= -1;
+                }
+
+                if (_upperYear < MinYear)
+                {
+                    _upperYear = MinYear;
+                    _upperPeriod = MinPeriod;
+                }
+                else if (_upperYear > MaxYear)
+                {
+                    _upperYear = MaxYear;
+                    _upperPeriod = MaxPeriod;
+                }
+                else
+                {
+                    _upperPeriod = ArtHelper.GetPeriodNumber(_upperYear);
+                }
+
+                OnPropertyChanged(nameof(UpperEra));
                 OnPropertyChanged(nameof(UpperYear));
+                OnPropertyChanged(nameof(UpperPeriod));
+                OnPropertyChanged(nameof(UpperDateText));
             }
         }
 
@@ -87,8 +165,11 @@ namespace ArtRecommenderSystem.ViewModels
             get => _lowerMuseumNumber;
             set
             {
-                _lowerMuseumNumber = value;
-                OnPropertyChanged(nameof(LowerMuseumNumber));
+                if (value >= MinMuseumNumber && value <= MaxMuseumNumber)
+                {
+                    _lowerMuseumNumber = value;
+                    OnPropertyChanged(nameof(LowerMuseumNumber));
+                }
             }
         }
 
@@ -97,8 +178,11 @@ namespace ArtRecommenderSystem.ViewModels
             get => _upperMuseumNumber;
             set
             {
-                _upperMuseumNumber = value;
-                OnPropertyChanged(nameof(UpperMuseumNumber));
+                if (value >= MinMuseumNumber && value <= MaxMuseumNumber)
+                {
+                    _upperMuseumNumber = value;
+                    OnPropertyChanged(nameof(UpperMuseumNumber));
+                }
             }
         }
 
@@ -122,12 +206,25 @@ namespace ArtRecommenderSystem.ViewModels
             }
         }
 
-        public int MinPeriodNumber => 1;
-        public int MaxPeriodNumber => ArtHelper.Periods.Length;
+        public string FilterMessage
+        {
+            get => _filterMessage;
+            set
+            {
+                _filterMessage = value;
+                OnPropertyChanged(nameof(FilterMessage));
+            }
+        }
+
+        public int MinPeriod { get; }
+        public int MaxPeriod { get; }
         public int MinYear { get; }
         public int MaxYear { get; }
         public int MinMuseumNumber { get; }
         public int MaxMuseumNumber { get; }
+
+        public string LowerDateText => GetExtendedPeriodName(_lowerYear);
+        public string UpperDateText => GetExtendedPeriodName(_upperYear);
 
         public List<GenreItem> GenreItems { get; }
         public List<PopularityItem> PopularityItems { get; }
@@ -164,12 +261,17 @@ namespace ArtRecommenderSystem.ViewModels
                            "Попробуйте снять ограничения в фильтре " +
                            "мастер-классов, популярности или жанров";
 
-            LowerPeriodNumber = MinPeriodNumber;
-            UpperPeriodNumber = MaxPeriodNumber;
-            LowerYear = MinYear = ArtHelper.Periods[0].Start;
-            UpperYear = MaxYear = DateTime.Now.Year;
-            LowerMuseumNumber = MinMuseumNumber = 0;
-            UpperMuseumNumber = MaxMuseumNumber = 10;
+            _lowerPeriod = MinPeriod = 1;
+            _upperPeriod = MaxPeriod = ArtHelper.Periods.Length;
+            _lowerYear = MinYear = ArtHelper.Periods[MinPeriod - 1].Start;
+            _upperYear = MaxYear = ArtHelper.Periods[MaxPeriod - 1].End;
+            _lowerEra = _lowerYear < 0 ? 0 : 1;
+            _upperEra = _upperYear < 0 ? 0 : 1;
+
+            _lowerMuseumNumber = MinMuseumNumber = 0;
+            _upperMuseumNumber = MaxMuseumNumber = 10;
+
+            _filterMessage = "";
 
             GenreItems = new List<GenreItem>
             {
@@ -284,12 +386,12 @@ namespace ArtRecommenderSystem.ViewModels
             };
         }
 
-        public void Filter()
+        private void Filter()
         {
             var settings = new FilterEngine.FilterSettings
             {
-                MinYear = LowerYear,
-                MaxYear = UpperYear,
+                MinYear = _lowerYear,
+                MaxYear = _upperYear,
                 MinMuseumNumber = LowerMuseumNumber,
                 MaxMuseumNumber = UpperMuseumNumber,
                 MasterClassesAreHeld = MasterClassesAreHeld,
@@ -303,6 +405,9 @@ namespace ArtRecommenderSystem.ViewModels
             };
 
             var filterResult = FilterEngine.Filter(settings);
+            FilterMessage = filterResult.IterationNumber > 0
+                ? BuildFilterMessage(filterResult.Settings)
+                : "";
 
             ArtCards.Clear();
             foreach (var art in filterResult.Arts)
@@ -313,10 +418,10 @@ namespace ArtRecommenderSystem.ViewModels
             UpdateArtCards();
         }
 
-        public void ResetFilters()
+        private void ResetFilters()
         {
-            LowerYear = MinYear;
-            UpperYear = MaxYear;
+            LowerPeriod = MinPeriod;
+            UpperPeriod = MaxPeriod;
             LowerMuseumNumber = MinMuseumNumber;
             UpperMuseumNumber = MaxMuseumNumber;
             MasterClassesAreHeld = MasterClassesAreNotHeld = false;
@@ -331,6 +436,52 @@ namespace ArtRecommenderSystem.ViewModels
             }
 
             UpdateArtCards();
+        }
+
+        private string BuildFilterMessage(FilterEngine.FilterSettings settings)
+        {
+            var message = "Некоторые из фильтров поиска были расширены:\n";
+            if (settings.MinYear != LowerYear || settings.MaxYear != UpperYear)
+            {
+                message += "\nПервое упоминание:";
+                message += "\n   от " + GetExtendedPeriodName(settings.MinYear) +
+                           "\n   до " + GetExtendedPeriodName(settings.MaxYear) + "\n";
+            }
+
+            if (settings.MinMuseumNumber != LowerMuseumNumber ||
+                settings.MaxMuseumNumber != UpperMuseumNumber)
+            {
+                message += "\nКоличество музеев: от " +
+                           settings.MinMuseumNumber + " до " +
+                           settings.MaxMuseumNumber;
+            }
+
+            return message;
+        }
+
+        private string GetExtendedPeriodName(int year)
+        {
+            int index = ArtHelper.GetPeriodNumber(year) - 1; // номер = индекс + 1
+            int half = ArtHelper.Periods[index].GetDuration() / 2;
+
+            string periodName = year.ConvertDateToString() + " (" +
+                                ArtHelper.Periods[index].Name + ", ";
+            if (year == ArtHelper.Periods[index].Start)
+            {
+                return periodName + "начало)";
+            }
+
+            if (year == ArtHelper.Periods[index].End)
+            {
+                return periodName + "конец)";
+            }
+
+            if (year <= ArtHelper.Periods[index].Start + half)
+            {
+                return periodName + "первая половина)";
+            }
+
+            return periodName + "вторая половина)";
         }
     }
 }

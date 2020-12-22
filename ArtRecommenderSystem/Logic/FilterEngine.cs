@@ -43,7 +43,7 @@ namespace ArtRecommenderSystem.Logic
         private static int ExpandMinYear(int minYear)
         {
             int index = GetPeriodNumber(minYear) - 1; // номер = индекс + 1
-            int half = (Periods[index].End - Periods[index].Start) / 2;
+            int half = Periods[index].GetDuration() / 2;
 
             int newYear = minYear;
             if (minYear == Periods[index].Start)
@@ -69,7 +69,7 @@ namespace ArtRecommenderSystem.Logic
         private static int ExpandMaxYear(int maxYear)
         {
             int index = GetPeriodNumber(maxYear) - 1; // номер = индекс + 1
-            int half = (Periods[index].End - Periods[index].Start) / 2;
+            int half = Periods[index].GetDuration() / 2;
 
             int newYear = maxYear;
             if (maxYear == Periods[index].End)

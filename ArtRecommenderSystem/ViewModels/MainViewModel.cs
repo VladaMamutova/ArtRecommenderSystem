@@ -62,7 +62,7 @@ namespace ArtRecommenderSystem.ViewModels
             set
             {
                 var newYear = value * (_lowerEra == 0 ? -1 : 1);
-                if (newYear >= MinYear && newYear <= MaxYear)
+                if (value >= 0 && newYear >= MinYear && newYear <= MaxYear)
                 {
                     _lowerYear = newYear;
                     _lowerPeriod = ArtHelper.GetPeriodNumber(_lowerYear);
@@ -80,7 +80,7 @@ namespace ArtRecommenderSystem.ViewModels
             set
             {
                 var newYear = value * (_upperEra == 0 ? -1 : 1);
-                if (newYear >= MinYear && newYear <= MaxYear)
+                if (value >= 0 && newYear >= MinYear && newYear <= MaxYear)
                 {
                     _upperYear = newYear;
                     _upperPeriod = ArtHelper.GetPeriodNumber(_upperYear);
@@ -427,6 +427,7 @@ namespace ArtRecommenderSystem.ViewModels
             MasterClassesAreHeld = MasterClassesAreNotHeld = false;
             PopularityItems.ForEach(item => item.IsChecked = false);
             GenreItems.ForEach(item => item.IsChecked = false);
+            FilterMessage = "";
 
             ArtCards.Clear();
             var arts = ApplicationContext.GetInstance().Arts;
@@ -440,18 +441,18 @@ namespace ArtRecommenderSystem.ViewModels
 
         private string BuildFilterMessage(FilterEngine.FilterSettings settings)
         {
-            var message = "Некоторые из фильтров поиска были расширены:\n";
+            var message = "Некоторые из фильтров поиска были расширены:";
             if (settings.MinYear != LowerYear || settings.MaxYear != UpperYear)
             {
-                message += "\nПервое упоминание:";
+                message += "\n\nПервое упоминание:";
                 message += "\n   от " + GetExtendedPeriodName(settings.MinYear) +
-                           "\n   до " + GetExtendedPeriodName(settings.MaxYear) + "\n";
+                           "\n   до " + GetExtendedPeriodName(settings.MaxYear);
             }
 
             if (settings.MinMuseumNumber != LowerMuseumNumber ||
                 settings.MaxMuseumNumber != UpperMuseumNumber)
             {
-                message += "\nКоличество музеев: от " +
+                message += "\n\nКоличество музеев: от " +
                            settings.MinMuseumNumber + " до " +
                            settings.MaxMuseumNumber;
             }

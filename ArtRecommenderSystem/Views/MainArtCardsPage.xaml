@@ -94,7 +94,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="-10">
-            <Expander ExpandDirection="Right" IsExpanded="True">
+            <Expander ExpandDirection="Right">
                 <Expander.Header>
                     <TextBlock Text="Параметрический поиск"
                                RenderTransformOrigin=".5,.5">

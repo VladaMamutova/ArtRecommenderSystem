@@ -1,0 +1,558 @@
+{
+	"name": "Виды ИЗО",
+	"type": "node",
+	"nestedObjects": [
+	    {
+			"name": "Живопись",
+			"type": "node",
+			"nestedObjects": [
+				{
+					"name": "Монументальная",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Фреска",
+						    "type": "leaf",
+						    "id": 1,
+						    "date": -1700,
+						    "museumNumber": 7,
+						    "popularity": "не распространен",
+						    "genres": ["религиозный", "мифологический", "исторический",	"портрет", "пейзаж"],
+							"areMasterClassesHeld": false
+						},
+						{
+						    "name": "Темпера",
+						    "type": "leaf",
+						    "id": 2,
+						    "date": -2000,
+						    "museumNumber": 5,
+						    "popularity": "не распространен",
+						    "genres": ["религиозный", "мифологический", "исторический", "портрет", "пейзаж", "бытовой"],
+							"areMasterClassesHeld": false
+						},
+						{
+						    "name": "Мозаика",
+						    "type": "leaf",
+						    "id": 3,
+						    "date": -4000,
+						    "museumNumber": 7,
+						    "popularity": "мало распространен",
+						    "genres": ["батальный", "исторический", "религиозный", "портрет", "бытовой", "пейзаж", "анималистический"],
+							"areMasterClassesHeld": false
+						},
+						{
+						    "name": "Витраж",
+						    "type": "leaf",
+						    "id": 4,
+						    "date": -4000,
+						    "museumNumber": 6,
+						    "popularity": "мало распространен",
+						    "genres": ["религиозный", "портрет"],
+							"areMasterClassesHeld": false
+						}
+					]
+				},
+				{
+					"name": "Станковая",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Краски",
+						    "type": "node",
+						    "nestedObjects": [
+						    	{
+								    "name": "Масло",
+								    "type": "leaf",
+								    "id": 5,
+								    "date": 1435,
+								    "museumNumber": 10,
+								    "popularity": "широко распространен",
+								    "genres": ["бытовой", "портрет", "пейзаж",	"исторический", "мифологический", "религиозный", "батальный", "натюрморт", "марина", "анималистический", "интерьер", "архитектура"],
+									"areMasterClassesHeld": true
+								},
+								{
+								    "name": "Акрил",
+								    "type": "leaf",
+								    "id": 6,
+								    "date": 1947,
+								    "museumNumber": 9,
+								    "popularity": "широко распространен",
+								    "genres": ["бытовой", "портрет", "пейзаж",	"исторический", "мифологический", "религиозный", "батальный", "натюрморт", "марина", "анималистический", "интерьер", "архитектура"],
+								    "areMasterClassesHeld": true
+								},
+								{
+								    "name": "Акварель",
+								    "type": "leaf",
+								    "id": 7,
+								    "date": 100,
+								    "museumNumber": 10,
+								    "popularity": "широко распространен",
+								    "genres": ["бытовой", "портрет", "пейзаж",	"исторический", "мифологический", "религиозный", "батальный", "натюрморт", "марина", "анималистический", "интерьер", "архитектура"],
+									"areMasterClassesHeld": true
+								},
+								{
+								    "name": "Гуашь",
+								    "type": "leaf",
+								    "id": 8,
+								    "date": 1700,
+								    "museumNumber": 6,
+								    "popularity": "широко распространен",
+								    "genres": ["бытовой", "портрет", "пейзаж",	"исторический", "мифологический", "религиозный", "батальный", "натюрморт", "марина", "анималистический", "интерьер", "архитектура"],
+									"areMasterClassesHeld": true
+								},
+								{
+								    "name": "Темпера",
+								    "type": "leaf",
+								    "id": 9,
+								    "date": -50,
+								    "museumNumber": 5,
+								    "popularity": "мало распространен",
+								    "genres": ["бытовой", "портрет", "пейзаж",	"исторический", "мифологический", "религиозный", "батальный", "натюрморт", "марина", "анималистический", "интерьер", "архитектура"],
+									"areMasterClassesHeld": true
+								},
+								{
+								    "name": "Тушь",
+								    "type": "leaf",
+								    "id": 10,
+								    "date": -1200,
+								    "museumNumber": 5,
+								    "popularity": "мало распространен",
+								    "genres": ["бытовой", "исторический", "пейзаж", "марина", "архитектура"],
+									"areMasterClassesHeld": true
+								},
+								{
+								    "name": "Энкаустика",
+								    "type": "leaf",
+								    "id": 11,
+								    "date": -32000,
+								    "museumNumber": 5,
+								    "popularity": "мало распространен",
+								    "genres": ["портрет", "религиозный", "пейзаж", "марина"],
+									"areMasterClassesHeld": true
+								}
+						    ]
+						},
+						{
+						    "name": "Мелки",
+						    "type": "node",
+						    "nestedObjects": [
+						    	{
+								    "name": "Пастель",
+								    "type": "leaf",
+								    "id": 12,
+								    "date": 1584,
+								    "museumNumber": 5,
+								    "popularity": "широко распространен",
+								    "genres": ["портрет", "пейзаж", "марина", "натюрморт", "анималистический", "интерьер", "архитектура"],
+									"areMasterClassesHeld": true
+								}
+						    ]
+						}
+					]
+				},
+				{
+					"name": "Декоративная живопись",
+					"type": "leaf",
+					"id": 13,
+					"date": -2700,
+					"museumNumber": 4,
+					"popularity": "распространен",
+					"genres": ["пейзаж", "натюрморт", "портрет", "анималистический", "декоративный"],
+					"areMasterClassesHeld": true
+				},
+				{
+					"name": "Миниатюрная живопись",
+					"type": "leaf",
+					"id": 14,
+					"date": 200,
+					"museumNumber": 4,
+					"popularity": "мало распространен",
+					"genres": ["пейзаж", "портрет", "анималистический", "мифологический", "бытовой", "декоративный"],
+					"areMasterClassesHeld": true
+				},
+				{
+					"name": "Театрально-декорационная живопись",
+					"type": "leaf",
+					"id": 15,
+					"date": -500,
+					"museumNumber": 3,
+					"popularity": "распространен",
+					"genres": ["пейзаж", "архитектура", "интерьер", "декоративный"],
+					"areMasterClassesHeld": false
+				}
+			]
+	    },
+	    {
+	    	"name": "Графика",
+			"type": "node",
+			"nestedObjects": [
+				{
+					"name": "Монументальная графика",
+					"type": "leaf",
+					"id": 16,
+					"date": -20000,
+					"museumNumber": 7,
+					"popularity": "распространен",
+					"genres": ["пейзаж", "портрет", "бытовой", "исторический"],
+					"areMasterClassesHeld": false
+				},
+				{
+					"name": "Станковая",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Эстамп",
+						    "type": "node",
+						    "nestedObjects": [
+								{
+								    "name": "Высокая печать",
+								    "type": "leaf",
+								    "id": 17,
+								    "date": 1450,
+								    "museumNumber": 6,
+								    "popularity": "не распространен",
+								    "genres": ["пейзаж", "анималистический", "портрет", "декоративный"],
+								    "areMasterClassesHeld": true
+								},
+								{
+								    "name": "Глубокая печать",
+								    "type": "leaf",
+								    "id": 18,
+								    "date": 1400,
+								    "museumNumber": 6,
+								    "popularity": "мало распространен",
+								    "genres": ["пейзаж", "анималистический", "мифологический", "религиозный", "исторический", "портрет", "декоративный"],
+								    "areMasterClassesHeld": true
+								},
+								{
+								    "name": "Плоская печать",
+								    "type": "leaf",
+								    "id": 19,
+								    "date": 1798,
+								    "museumNumber": 6,
+								    "popularity": "широко распространен",
+								    "genres": ["пейзаж", "портрет", "батальный", "исторический", "анималистический", "декоративный"],
+									"areMasterClassesHeld": false
+								},
+								{
+								    "name": "Трафаретная печать",
+								    "type": "leaf",
+								    "id": 20,
+								    "date": -400,
+								    "museumNumber": 5,
+								    "popularity": "распространен",
+								    "genres": ["анималистический", "портрет", "декоративный"],
+									"areMasterClassesHeld": true
+								},
+						    ]
+						},
+						{
+						    "name": "Рисунок",
+						    "type": "leaf",
+						    "id": 21,
+						    "date": -1800,
+						    "museumNumber": 7,
+						    "popularity": "широко распространен",
+						    "genres": ["бытовой", "портрет", "пейзаж", "исторический", "мифологический", "религиозный", "батальный", "натюрморт", "марина", "анималистический", "интерьер", "архитектура", "декоративный"],
+							"areMasterClassesHeld": true
+						}
+					]
+				},
+				{
+					"name": "Декоративная графика",
+					"type": "leaf",
+					"id": 22,
+					"date": -1200,
+					"museumNumber": 3,
+					"popularity": "мало распространен",
+					"genres": ["натюрморт", "анималистический", "пейзаж", "декоративный"],
+					"areMasterClassesHeld": true
+				}
+			]
+	    },
+	    {
+			"name": "Скульптура",
+			"type": "node",
+			"nestedObjects": [
+				{
+					"name": "Рельефная",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Барельеф",
+						    "type": "leaf",
+						    "id": 23,
+						    "date": -9000,
+						    "museumNumber": 8,
+						    "popularity": "распространен",
+						    "genres": ["исторический", "религиозный", "мифологический", "бытовой", "портрет", "анималистический", "пейзаж", "архитектура"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Горельеф",
+						    "type": "leaf",
+						    "id": 24,
+						    "date": -600,
+						    "museumNumber": 7,
+						    "popularity": "распространен",
+						    "genres": ["исторический", "религиозный", "мифологический", "бытовой", "портрет"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Контррельеф",
+						    "type": "leaf",
+						    "id": 25,
+						    "date": -4000,
+						    "museumNumber": 6,
+						    "popularity": "мало распространен",
+						    "genres": ["портрет", "исторический", "религиозный", "анималистический", "натюрморт"],
+							"areMasterClassesHeld": true
+						}
+					]
+				},
+				{
+				    "name": "Круглая скульптура",
+				    "type": "leaf",
+				    "id": 26,
+				    "date": -230000,
+				    "museumNumber": 8,
+				    "popularity": "широко распространен",
+				    "genres": ["портрет", "исторический", "мифологический", "бытовой", "религиозный", "анималистический", "натюрморт", "архитектура"],
+					"areMasterClassesHeld": true
+				},
+			]
+	    },
+	    {
+			"name": "Архитектура",
+			"type": "node",
+			"nestedObjects": [
+				{
+					"name": "Объёмное проектирование",
+				    "type": "leaf",
+				    "id": 27,
+				    "date": -40000,
+				    "museumNumber": 0,
+				    "popularity": "широко распространен",
+				    "genres": ["архитектура"],
+					"areMasterClassesHeld": false
+				},
+				{
+					"name": "Градостроительство",
+				    "type": "leaf",
+				    "id": 28,
+				    "date": -40000,
+				    "museumNumber": 0,
+				    "popularity": "широко распространен",
+				    "genres": ["архитектура"],
+					"areMasterClassesHeld": false
+				},
+				{
+					"name": "Зелёная архитектура",
+				    "type": "leaf",
+				    "id": 29,
+				    "date": 1975,
+				    "museumNumber": 7,
+				    "popularity": "распространен",
+				    "genres": ["архитектура"],
+					"areMasterClassesHeld": false
+				},
+				{
+					"name": "Ландшафт",
+				    "type": "leaf",
+				    "id": 30,
+				    "date": 1860,
+				    "museumNumber": 0,
+				    "popularity": "широко распространен",
+				    "genres": ["архитектура", "анималистический"],
+					"areMasterClassesHeld": false
+				},
+				{
+					"name": "Дизайн интерьера",
+				    "type": "leaf",
+				    "id": 31,
+				    "date": -4000,
+				    "museumNumber": 0,
+				    "popularity": "широко распространен",
+				    "genres": ["интерьер", "архитектура", "декоративный"],
+					"areMasterClassesHeld": true
+				}
+			]
+		},
+		{
+			"name": "Декоративно-прикладное искусство",
+			"type": "node",
+			"nestedObjects": [
+				{
+					"name": "Художественная резьба",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Резьба по дереву",
+						    "type": "leaf",
+						    "id": 32,
+						    "date": -8000,
+						    "museumNumber": 7,
+						    "popularity": "широко распространен",
+						    "genres": ["портрет", "пейзаж", "бытовой", "религиозный", "анималистический", "натюрморт", "декоративный"],
+							"areMasterClassesHeld": false
+						},
+						{
+						    "name": "Резьба по камню",
+						    "type": "leaf",
+						    "id": 33,
+						    "date": -6000,
+						    "museumNumber": 4,
+						    "popularity": "мало распространен",
+						    "genres": ["портрет", "анималистический", "религиозный", "декоративный"],
+						    "areMasterClassesHeld": false
+						},
+						{
+						    "name": "Резьба по кости",
+						    "type": "leaf",
+						    "id": 34,
+						    "date": -20000,
+						    "museumNumber": 3,
+						    "popularity": "мало распространен",
+						    "genres": ["портрет", "анималистический", "религиозный", "декоративный"],
+							"areMasterClassesHeld": false
+						}
+					]
+				},
+				{
+					"name": "Обработка металла",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Ювелирное дело",
+						    "type": "leaf",
+						    "id": 35,
+						    "date": -4000,
+						    "museumNumber": 5,
+						    "popularity": "широко распространен",
+						    "genres": ["декоративный", "анималистический"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Кузнечное ремесло",
+						    "type": "leaf",
+						    "id": 36,
+						    "date": -4000,
+						    "museumNumber": 3,
+						    "popularity": "мало распространен",
+						    "genres": ["декоративный", "анималистический"],
+							"areMasterClassesHeld": true
+						}
+					]
+				},
+				{
+					"name": "Обработка глины",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Керамика",
+						    "type": "leaf",
+						    "id": 37,
+						    "date": -29000,
+						    "museumNumber": 6,
+						    "popularity": "широко распространен",
+						    "genres": ["анималистический", "портрет", "пейзаж", "натюрморт", "декоративный"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Мелкая пластика",
+						    "type": "leaf",
+						    "id": 38,
+						    "date": -45000,
+						    "museumNumber": 6,
+						    "popularity": "широко распространен",
+						    "genres": ["анималистический", "портрет", "натюрморт", "декоративный"],
+							"areMasterClassesHeld": true
+						}
+					]
+				},
+				{
+					"name": "Шитьё",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Вышивание",
+						    "type": "leaf",
+						    "id": 39,
+						    "date": -400,
+						    "museumNumber": 2,
+						    "popularity": "широко распространен",
+						    "genres": ["пейзаж", "портрет", "анималистический", "религиозный", "декоративный"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Вязание",
+						    "type": "leaf",
+						    "id": 40,
+						    "date": -4000,
+						    "museumNumber": 2,
+						    "popularity": "широко распространен",
+						    "genres": ["анималистический", "портрет", "пейзаж", "декоративный"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Ткачество",
+						    "type": "leaf",
+						    "id": 41,
+						    "date": -6000,
+						    "museumNumber": 3,
+						    "popularity": "широко распространен",
+						    "genres": ["декоративный", "пейзаж"],
+						    "areMasterClassesHeld": true
+						}
+					]
+				},
+				{
+					"name": "Мозаика",
+					"type": "node",
+					"nestedObjects": [
+						{
+						    "name": "Витраж",
+						    "type": "leaf",
+						    "id": 42,
+						    "date": 600,
+						    "museumNumber": 0,
+						    "popularity": "распространен",
+						    "genres": ["анималистический", "пейзаж", "натюрморт", "религиозный", "декоративный"],
+							"areMasterClassesHeld": true
+						},
+						{
+						    "name": "Декупаж",
+						    "type": "leaf",
+						    "id": 43,
+						    "date": 1400,
+						    "museumNumber": 0,
+						    "popularity": "широко распространен",
+						    "genres": ["анималистический", "пейзаж", "натюрморт", "религиозный", "декоративный"],
+							"areMasterClassesHeld": true
+						}
+					]
+				},
+				{
+				    "name": "Роспись",
+				    "type": "leaf",
+				    "id": 44,
+				    "date": 1659,
+				    "museumNumber": 4,
+				    "popularity": "широко распространен",
+				    "genres": ["декоративный", "пейзаж", "анималистический", "бытовой"],
+					"areMasterClassesHeld": true
+				},
+				{
+				    "name": "Плетение",
+				    "type": "leaf",
+				    "id": 45,
+				    "date": -10000,
+				    "museumNumber": 0,
+				    "popularity": "широко распространен",
+				    "genres": ["декоративный", "анималистический"],
+					"areMasterClassesHeld": true
+				}
+			]
+		}
+	]
+}

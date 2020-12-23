@@ -22,6 +22,8 @@ namespace ArtRecommenderSystem.ViewModels
         private bool _masterClassesAreNotHeld;
         private string _filterMessage;
 
+        private bool _forceUpdate;
+
         private RelayCommand _filterCommand;
         private RelayCommand _resetFiltersCommand;
 
@@ -348,7 +350,7 @@ namespace ArtRecommenderSystem.ViewModels
 
         public override void UpdateArtCards()
         {
-            if (IsUpToDate()) return;
+            if (IsUpToDate() && !_forceUpdate) return;
 
             var preferences = ApplicationContext.GetInstance().GetPreferences();
 
@@ -415,7 +417,9 @@ namespace ArtRecommenderSystem.ViewModels
                 ArtCards.Add(BuildArtRecord(art));
             }
 
+            _forceUpdate = true;
             UpdateArtCards();
+            _forceUpdate = false;
         }
 
         private void ResetFilters()
@@ -436,7 +440,9 @@ namespace ArtRecommenderSystem.ViewModels
                 ArtCards.Add(BuildArtRecord(art));
             }
 
+            _forceUpdate = true;
             UpdateArtCards();
+            _forceUpdate = false;
         }
 
         private string BuildFilterMessage(FilterEngine.FilterSettings settings)

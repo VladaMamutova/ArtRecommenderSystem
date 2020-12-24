@@ -32,7 +32,8 @@ namespace ArtRecommenderSystem.Views
 
         public void Activate()
         {
-            ((IArtCardsViewModel)DataContext).UpdateArtCards();
+            ((ArtCardsViewModel)DataContext).MessageQueue.Clear();
+            ((ArtCardsViewModel)DataContext).UpdateArtCards();
         }
     }
 }

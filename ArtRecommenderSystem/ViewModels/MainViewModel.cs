@@ -407,7 +407,8 @@ namespace ArtRecommenderSystem.ViewModels
             };
 
             var filterResult = FilterEngine.Filter(settings);
-            FilterMessage = filterResult.IterationNumber > 0
+            FilterMessage = filterResult.IterationNumber > 0 &&
+                            filterResult.Arts.Count > 0
                 ? BuildFilterMessage(filterResult.Settings)
                 : "";
 

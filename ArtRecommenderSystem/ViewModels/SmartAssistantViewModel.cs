@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading;
+using ArtRecommenderSystem.Logic;
 using ArtRecommenderSystem.Utilities;
 
 namespace ArtRecommenderSystem.ViewModels
@@ -50,6 +52,15 @@ namespace ArtRecommenderSystem.ViewModels
             Messages.Add(new Message("Да, он мало распространён сейчас."));
             Messages.Add(new Message("А мастер-классы проводятся?", true));
             Messages.Add(new Message("Да, мастер-классы проводятся."));
+
+            // Сразу же в отдельном потоке создаём объект SmartAssistant,
+            // так как объекту морфологического анализатора, который
+            // инициализируется в ассистенте, необходимо дополнительное
+            // время для первой загрузки.
+            new Thread(o =>
+            {
+                var instance = SmartAssistant.Instance;
+            }).Start();
         }
 
         private void Ask()
@@ -57,8 +68,11 @@ namespace ArtRecommenderSystem.ViewModels
             if (string.IsNullOrWhiteSpace(Question)) return;
 
             Messages.Add(new Message(Question, true));
-            Question = "";
             MessageSent?.Invoke(this, EventArgs.Empty);
+
+            string answer = SmartAssistant.Instance.Answer(Question);
+            Messages.Add(new Message(answer));
+            Question = "";
         }
     }
 }

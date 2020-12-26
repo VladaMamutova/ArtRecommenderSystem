@@ -67,6 +67,7 @@ namespace ArtRecommenderSystem.Views
         {
             MyGalleryRadioButton.IsChecked = false;
             ContentFrame.Navigate(_smartAssistantPage);
+            _smartAssistantPage.Activate();
         }
 
         private void MyGalleryPage_OnChecked(object sender, RoutedEventArgs e)

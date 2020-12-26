@@ -85,6 +85,7 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <RadioButton x:Name="MainRadioButton" Content="ГЛАВНАЯ" Checked="MainPage_OnChecked"/>
                     <RadioButton x:Name="RecommendationRadioButton" Content="РЕКОМЕНДАЦИИ" Checked="RecommendationPage_OnChecked"/>
+                    <RadioButton x:Name="SmartAssistantRadioButton" Content="УМНЫЙ ПОМОЩНИК" Checked="SmartAssistantPage_OnChecked"/>
                 </StackPanel>
                 <RadioButton x:Name="MyGalleryRadioButton" Grid.Column="1" ContentStringFormat="МОЯ ГАЛЕРЕЯ" Checked="MyGalleryPage_OnChecked" Style="{StaticResource ImageRadioButton}"/>
             </Grid>

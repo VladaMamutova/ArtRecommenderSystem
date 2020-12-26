@@ -116,6 +116,9 @@
     <Compile Include="Models\PopularityEnum.cs" />
     <Compile Include="Models\Preference.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Utilities\SentByMeToForegroundConverter.cs" />
+    <Compile Include="Utilities\SentByMeToBackgroundConverter.cs" />
+    <Compile Include="Utilities\SentByMeToAlignmentConverter.cs" />
     <Compile Include="Utilities\BooleanToStringConverter.cs" />
     <Compile Include="Utilities\DateToStringConverter.cs" />
     <Compile Include="Utilities\EnumExtensions.cs" />
@@ -127,12 +130,14 @@
     <Compile Include="ViewModels\ArtCard.cs" />
     <Compile Include="ViewModels\ArtCardsViewModel.cs" />
     <Compile Include="ViewModels\GenreItem.cs" />
+    <Compile Include="ViewModels\Message.cs" />
     <Compile Include="ViewModels\PopularityItem.cs" />
     <Compile Include="ViewModels\BlacklistViewModel.cs" />
     <Compile Include="ViewModels\FavoritesViewModel.cs" />
     <Compile Include="ViewModels\IArtCardsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RecommendationsViewModel.cs" />
+    <Compile Include="ViewModels\SmartAssistantViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ArtCardsPage.cs" />
     <Compile Include="Views\BlacklistPage.xaml.cs">
@@ -149,6 +154,9 @@
     </Compile>
     <Compile Include="Views\RecommendationPage.xaml.cs">
       <DependentUpon>RecommendationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SmartAssistantPage.xaml.cs">
+      <DependentUpon>SmartAssistantPage.xaml</DependentUpon>
     </Compile>
     <Page Include="CustomControls\RangeSlider.xaml">
       <SubType>Designer</SubType>
@@ -185,6 +193,10 @@
     <Page Include="Views\RecommendationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Views\SmartAssistantPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

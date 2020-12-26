@@ -11,6 +11,7 @@ namespace ArtRecommenderSystem.Views
     {
         private readonly ArtCardsPage _mainPage;
         private readonly ArtCardsPage _recommendationPage;
+        private readonly SmartAssistantPage _smartAssistantPage;
         private readonly MyGalleryPage _myGalleryPage;
 
         public MainWindow()
@@ -19,6 +20,7 @@ namespace ArtRecommenderSystem.Views
 
             _mainPage = new MainArtCardsPage();
             _recommendationPage = new RecommendationPage();
+            _smartAssistantPage = new SmartAssistantPage();
             _myGalleryPage = new MyGalleryPage();
             MainRadioButton.IsChecked = true;
         }
@@ -61,10 +63,17 @@ namespace ArtRecommenderSystem.Views
             _recommendationPage.Activate();
         }
 
+        private void SmartAssistantPage_OnChecked(object sender, RoutedEventArgs e)
+        {
+            MyGalleryRadioButton.IsChecked = false;
+            ContentFrame.Navigate(_smartAssistantPage);
+        }
+
         private void MyGalleryPage_OnChecked(object sender, RoutedEventArgs e)
         {
             MainRadioButton.IsChecked = false;
             RecommendationRadioButton.IsChecked = false;
+            SmartAssistantRadioButton.IsChecked = false;
             ContentFrame.Navigate(_myGalleryPage);
             _myGalleryPage.Activate();
         }

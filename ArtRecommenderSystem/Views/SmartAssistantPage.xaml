@@ -1,0 +1,39 @@
+﻿<Page x:Class="ArtRecommenderSystem.Views.SmartAssistantPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:utilities="clr-namespace:ArtRecommenderSystem.Utilities"
+      mc:Ignorable="d"
+      FontSize="14"
+      d:DesignHeight="450" d:DesignWidth="800">
+<Page.Resources>
+    <ResourceDictionary>
+            <utilities:SentByMeToAlignmentConverter x:Key="SentByMeToAlignmentConverter" />
+            <utilities:SentByMeToBackgroundConverter x:Key="SentByMeToBackgroundConverter" />
+            <utilities:SentByMeToForegroundConverter x:Key="SentByMeToForegroundConverter" />
+    </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Messages}" Margin="150 10" HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card
+                            Background="{Binding SentByMe, Converter={StaticResource SentByMeToBackgroundConverter}}"
+                            Foreground="{Binding SentByMe, Converter={StaticResource SentByMeToForegroundConverter}}"
+                            Width="Auto" MaxWidth="500"
+                            Height="Auto"
+                            UniformCornerRadius="10"
+                            Padding="16 10"
+                            Margin="0 0 0 12"
+                            HorizontalAlignment="{Binding SentByMe, Converter={StaticResource SentByMeToAlignmentConverter}}">
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -45,13 +45,10 @@ namespace ArtRecommenderSystem.ViewModels
 
         public SmartAssistantViewModel()
         {
-            Messages = new ObservableCollection<Message>();
-            Messages.Add(new Message("Сколько музеев, в которых можно посмотреть витраж?", true));
-            Messages.Add(new Message("Не очень много, всего 6 музеев."));
-            Messages.Add(new Message("Это не популярный вид искусства?", true));
-            Messages.Add(new Message("Да, он мало распространён сейчас."));
-            Messages.Add(new Message("А мастер-классы проводятся?", true));
-            Messages.Add(new Message("Да, мастер-классы проводятся."));
+            Messages = new ObservableCollection<Message>
+            {
+                new Message("Чем я могу помочь?")
+            };
 
             // Сразу же в отдельном потоке создаём объект SmartAssistant,
             // так как объекту морфологического анализатора, который

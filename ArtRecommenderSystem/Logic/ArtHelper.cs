@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using ArtRecommenderSystem.Database;
 using ArtRecommenderSystem.Models;
-using ArtRecommenderSystem.ViewModels;
 
 namespace ArtRecommenderSystem.Logic
 {

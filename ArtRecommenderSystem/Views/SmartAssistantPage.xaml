@@ -111,13 +111,13 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" x:Name="ScrollViewer" Margin="0 16 172 0" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Messages}" Margin="150 0 0 0" Padding="24 12"
-                          HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom"
+                          HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch"
                           Background="{StaticResource MaterialDesignCardBackground}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
                             Background="{Binding SentByMe, Converter={StaticResource SentByMeToBackgroundConverter}}"
-                            Width="Auto" MaxWidth="500"
+                            Width="Auto" MaxWidth="700"
                             Height="Auto"
                             CornerRadius="18"
                             Padding="20 12"

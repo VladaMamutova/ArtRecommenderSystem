@@ -13,27 +13,137 @@
             <utilities:SentByMeToAlignmentConverter x:Key="SentByMeToAlignmentConverter" />
             <utilities:SentByMeToBackgroundConverter x:Key="SentByMeToBackgroundConverter" />
             <utilities:SentByMeToForegroundConverter x:Key="SentByMeToForegroundConverter" />
-    </ResourceDictionary>
+            <SolidColorBrush x:Key="PrimaryLightBrush" Color="{StaticResource Primary100}"/>
+            <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="IsTabStop" Value="False"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border x:Name="rectangle" SnapsToDevicePixels="True" Background="{StaticResource PrimaryHueLightBrush}"
+                                CornerRadius="3" Opacity="0.4" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                            <ControlTemplate.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="rectangle" Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation To="0.4" Duration="0:0:0.3" Storyboard.TargetName="rectangle" Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="{x:Type ScrollBar}">
+                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="Width" Value="14"/>
+                <Setter Property="Margin" Value="-14 0 0 0" />
+                <Setter Property="MinWidth" Value="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid x:Name="Bg" SnapsToDevicePixels="True" Background="Transparent">
+                                <Border Padding="0 4">
+                                    <Track x:Name="PART_Track" IsDirectionReversed="True" IsEnabled="{TemplateBinding IsMouseOver}" Width="6" HorizontalAlignment="Center">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Opacity="0" Command="{x:Static ScrollBar.PageUpCommand}" />
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Opacity="0" Command="{x:Static ScrollBar.PageDownCommand}" />
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb Style="{StaticResource ScrollBarThumb}" />
+                                        </Track.Thumb>
+                                    </Track>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Orientation" Value="Horizontal">
+                        <Setter Property="Width" Value="Auto"/>
+                        <Setter Property="MinWidth" Value="0"/>
+                        <Setter Property="Height" Value="14"/>
+                        <Setter Property="MinHeight" Value="{Binding Height, RelativeSource={RelativeSource Self}}"/>
+                        <Setter Property="Margin" Value="0 -14 0 0" />
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                    <Grid x:Name="Bg" SnapsToDevicePixels="True">
+                                        <Track x:Name="PART_Track" IsEnabled="{TemplateBinding IsMouseOver}" Height="6">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Opacity="0" Command="{x:Static ScrollBar.PageLeftCommand}"/>
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Opacity="0" Command="{x:Static ScrollBar.PageRightCommand}"/>
+                                            </Track.IncreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb Style="{StaticResource ScrollBarThumb}" />
+                                            </Track.Thumb>
+                                        </Track>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
-    <Grid>
-        <ScrollViewer>
-            <ItemsControl ItemsSource="{Binding Messages}" Margin="150 10" HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom">
+    <Grid Background="{StaticResource PrimaryLightBrush}" Margin="-10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" x:Name="ScrollViewer" Margin="0 16 172 0" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Messages}" Margin="150 0 0 0" Padding="24 12"
+                          HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom"
+                          Background="{StaticResource MaterialDesignCardBackground}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:Card
+                        <Border
                             Background="{Binding SentByMe, Converter={StaticResource SentByMeToBackgroundConverter}}"
-                            Foreground="{Binding SentByMe, Converter={StaticResource SentByMeToForegroundConverter}}"
                             Width="Auto" MaxWidth="500"
                             Height="Auto"
-                            UniformCornerRadius="10"
-                            Padding="16 10"
-                            Margin="0 0 0 12"
+                            CornerRadius="18"
+                            Padding="20 12"
+                            Margin="0 0 0 10"
                             HorizontalAlignment="{Binding SentByMe, Converter={StaticResource SentByMeToAlignmentConverter}}">
-                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-                        </materialDesign:Card>
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Foreground="{Binding SentByMe, Converter={StaticResource SentByMeToForegroundConverter}}"/>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+        <Grid Grid.Row="1" Margin="150 16 170 16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="QuestionTextBox" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                     Background="{StaticResource MaterialDesignPaper}"
+                     materialDesign:HintAssist.Hint="Что вам подсказать?" materialDesign:HintAssist.IsFloating="False"
+                     Text="{Binding Question, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding Path=AskCommand}" Key="Enter" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Grid.Column="2" Content="{materialDesign:PackIcon Send}" Command="{Binding AskCommand}" Width="56" Height="40" VerticalAlignment="Stretch"/>
+        </Grid>
     </Grid>
 </Page>

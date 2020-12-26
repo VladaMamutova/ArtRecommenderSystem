@@ -12,6 +12,14 @@ namespace ArtRecommenderSystem.Views
         {
             InitializeComponent();
             DataContext = new SmartAssistantViewModel();
+            ((SmartAssistantViewModel) DataContext).MessageSent +=
+                (sender, args) => { ScrollViewer.ScrollToEnd(); };
+            QuestionTextBox.Focus();
+        }
+
+        public void Activate()
+        {
+            ScrollViewer.ScrollToEnd();
         }
     }
 }
